@@ -4,16 +4,19 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-var hash = crypto.createHash('sha256'); //md5
-
 var path = require('path');
-app.use('/scripts', express.static(path.join(__dirname, 'node_modules/bootstrap/dist')));
-
+var fs = require('fs');
+var crypto = require('crypto');
+var hash = crypto.createHash('sha256'); //md5
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
+
+// expose bootstrap
+app.use('/scripts', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/')));
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -44,26 +47,26 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-//START CRYPTO
-crypto.getHashes(); // [ 'dsa', 'dsa-sha', ..., 'md5', ... ]
-var stream = fs.createReadStream('mybigfile.dat');
-stream.on('data', function(data) {
-  hash.update(data, 'utf8')
-});
-
-stream.on('end', function() {
-  hash.digest('hex') // 34f7a3113803f8ed3b8fd7ce5656ebec
-});
-
-function checksum(str, algorithm, encoding) {
-  return crypto
-    .createHash(algorithm || 'md5')
-    .update(str, 'utf8')
-    .digest(encoding || 'hex')
-}
-
-checksum('This is my test text') // e53815e8c095e270c6560be1bb76a65d
-checksum('This is my test text', 'sha1') // cd5855be428295a3cc1793d6e80ce47562d23def
-//END CRYPTO
+// //START CRYPTO
+// crypto.getHashes(); // [ 'dsa', 'dsa-sha', ..., 'md5', ... ]
+// var stream = fs.createReadStream('mybigfile.dat');
+// stream.on('data', function(data) {
+//   hash.update(data, 'utf8')
+// });
+//
+// stream.on('end', function() {
+//   hash.digest('hex') // 34f7a3113803f8ed3b8fd7ce5656ebec
+// });
+//
+// function checksum(str, algorithm, encoding) {
+//   return crypto
+//     .createHash(algorithm || 'md5')
+//     .update(str, 'utf8')
+//     .digest(encoding || 'hex')
+// }
+//
+// checksum('This is my test text') // e53815e8c095e270c6560be1bb76a65d
+// checksum('This is my test text', 'sha1') // cd5855be428295a3cc1793d6e80ce47562d23def
+// //END CRYPTO
 
 module.exports = app;
