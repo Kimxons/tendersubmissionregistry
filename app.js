@@ -3,8 +3,8 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
-var path = require('path');
+var flash = require('express-flash');
+var session = require('express-session');
 var fs = require('fs');
 var crypto = require('crypto');
 var hash = crypto.createHash('sha256'); //md5
@@ -29,6 +29,23 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(session({
+ secret: '123456cat',
+ resave: false,
+ saveUninitialized: true,
+ cookie: { maxAge: 1800000 } // time im ms: 60000 - 1 min, 1800000 - 30min, 3600000 - 1 hour
+}))
+
+//make error and success available to every ejs template
+app.use(flash());
+app.use(function(req,res,next){
+  res.locals.error = req.flash("error");
+  res.locals.success = req.flash("success")
+  next();
+});
+
+
+//mount routers
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
