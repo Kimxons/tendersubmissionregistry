@@ -3,7 +3,8 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  var title = 'Tender Submission Registry. Tracing tender submissions from submission to contract awarding.';
+  res.render('index', { title: title });
 });
 
 module.exports = router;
