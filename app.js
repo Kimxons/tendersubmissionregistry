@@ -6,6 +6,9 @@ var logger = require('morgan');
 
 var hash = crypto.createHash('sha256'); //md5
 
+var path = require('path');
+app.use('/scripts', express.static(path.join(__dirname, 'node_modules/bootstrap/dist')));
+
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
