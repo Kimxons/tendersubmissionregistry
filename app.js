@@ -15,7 +15,8 @@ var usersRouter = require('./routes/users');
 var app = express();
 
 // expose bootstrap
-app.use('/scripts', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/')));
+app.use('/scripts/bootstrap', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/')));
+app.use('/scripts/jquery', express.static(path.join(__dirname, 'node_modules/jquery/dist/')));
 
 
 // view engine setup
