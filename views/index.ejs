@@ -18,8 +18,8 @@
           <h3 class="jumbotron-heading"><%= title_sub %></h3>
           <p class="lead text-muted">Digitally sign tender documents (in zip format) at submission time & Verify authenticity of submissions during tender vetting process.</p>
           <p>
-            <a href="#" class="btn btn-primary my-2">Upload Tender Documents</a>
-            <a href="#" class="btn btn-secondary my-2">Verify Tender Documents</a>
+            <a href="#" class="btn btn-primary my-2" aria-pressed="true">Upload Tender Documents</a>
+            <a href="#" class="btn btn-secondary my-2" aria-pressed="true">Verify Tender Documents</a>
           </p>
         </div>
       </section>
@@ -28,6 +28,30 @@
         <div class="container">
           <div class="row">
             <% include ./partials/notificationbar %>
+          </div>
+          <div class="row align-items-center justify-content-center">
+            <div class="col-md-8">
+              <h4>
+                <span class="text-muted">How it Works</span>
+              </h4>
+              <!--<p>Struct Bid Number, Terms of Reference, Bid Specifications, Briefing Session, Published Date, Closing date, Supplier ID, Supplier Representative (Name & Surname)</p>-->
+            </div>
+            <div class="card-deck col-md-8">
+              <div class="card shadow-sm bg-primary">
+                <div class="card-header"><b>Step 01</b></div>
+                <div class="card-body">
+                  <h5 class="card-title">Upload Tender Documents</h5>
+                  <p class="card-text">ZIP file of tender documents is uploaded by authorised representative of supplier company. The hash of the ZIP file is calculated and stored on the Blockchain together with the date of submission for later verification.</p>
+                </div>
+              </div>
+              <div class="card shadow-sm bg-success">
+                <div class="card-header"><b>Step 02</b></div>
+                <div class="card-body">
+                  <h5 class="card-title">Verify Tender Documents</h5>
+                  <p class="card-text">During tender vetting process, authorised representative of company that issued the tender uploads the ZIP file from their tender portal. If the ZIP file has been modified after submission, the hash will not match with the one stored on the Blockchain and the supplier is disqualified.</p>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="row align-items-center justify-content-center">
             <div class="col-md-8 order-md-1">
@@ -107,12 +131,6 @@
                 </div>
                 <button type="submit" class="btn btn-primary my-1">Verify</button>
               </form>
-            </div>
-          </div>
-
-          <div class="row align-items-center justify-content-center">
-            <div class="col-md-8 order-md-1">
-              <p>Struct Bid Number, Terms of Reference, Bid Specifications, Briefing Session, Published Date, Closing date, Supplier ID, Supplier Representative (Name & Surname)</p>
             </div>
           </div>
         </div>
