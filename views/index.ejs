@@ -29,7 +29,7 @@
           <div class="row">
             <% include ./partials/notificationbar %>
           </div>
-          <div class="row align-items-center justify-content-center">
+          <div class="row align-items-center justify-content-center" id="howItWorksTenderDocsRow">
             <div class="col-md-8">
               <h4>
                 <p class="text-muted text-center">HOW IT WORKS</p>
@@ -53,29 +53,29 @@
               </div>
             </div>
           </div>
-          <div class="row align-items-center justify-content-center">
+          <div class="row align-items-center justify-content-center" id="uploadTenderDocsRow">
             <div class="col-md-8 order-md-1">
               <h4>
                 <p class="text-muted text-center">UPLOAD TENDER DOCUMENTS</p>
               </h4>
               <small class="text-muted">10MB Size Limit for ZIP file</small>
-              <form class="card p-2">
+              <form class="card p-2" id="uploadTenderDocsForm">
                 <div class="custom-file mb-3">
-                  <input type="file" class="custom-file-input" id="customFileLang">
-                  <label class="custom-file-label" for="customFileLang">Upload ZIP file of tender documents</label>
+                  <input type="file" class="custom-file-input" id="uploadTenderDocsInputFileZIP" required>
+                  <label class="custom-file-label" for="uploadTenderDocsInputFileZIP">Upload ZIP file of tender documents</label>
                 </div>
                 <div class="row">
                   <div class="col-md-6 mb-3">
-                    <label for="cc-name">Submitted By (Name & Surname)</label>
-                    <input type="text" class="form-control" id="cc-name" placeholder="" required>
+                    <label for="uploadTenderDocsInputTextSubmittedBy">Submitted By (Name & Surname)</label>
+                    <input type="text" class="form-control" id="uploadTenderDocsInputTextSubmittedBy" placeholder="" required>
                     <small class="text-muted">Full name of supplier representative</small>
                     <div class="invalid-feedback">
                       Valid Name & Surname is required.
                     </div>
                   </div>
                   <div class="col-md-6 mb-3">
-                    <label for="cc-number">Identification Number</label>
-                    <input type="text" class="form-control" id="cc-number" placeholder="" required>
+                    <label for="uploadTenderDocsInputTextIDNum">Identification Number</label>
+                    <input type="text" class="form-control" id="uploadTenderDocsInputTextIDNum" placeholder="" required>
                     <small class="text-muted">Identification number of person submitting tender documents</small>
                     <div class="invalid-feedback">
                       Valid Supplier Representative National Identification Number is required.
@@ -84,8 +84,8 @@
                 </div>
                 <div class="row">
                   <div class="col-md-6 mb-3">
-                    <label for="country">Tender</label>
-                    <select class="custom-select d-block w-100" id="country" required>
+                    <label for="uploadTenderDocsSelectTenderNum">Tender</label>
+                    <select class="custom-select d-block w-100" id="uploadTenderDocsSelectTenderNum" required>
                       <option value="">Select Tender</option>
                       <option>1001 - Fix and Supply Data Center Hardware</option>
                       <option>1002 - Install Data Center Software</option>
@@ -98,8 +98,8 @@
                     </div>
                   </div>
                   <div class="col-md-6 mb-3">
-                    <label for="cc-name">Supplier ID</label>
-                    <input type="text" class="form-control" id="cc-name" placeholder="" required>
+                    <label for="uploadTenderDocsInputTextSupplierID">Supplier ID</label>
+                    <input type="text" class="form-control" id="uploadTenderDocsInputTextSupplierID" placeholder="" required>
                     <small class="text-muted">Suppliers Central Supplier Database ID</small>
                     <div class="invalid-feedback">
                       Valid Supplier ID is required.
@@ -107,29 +107,29 @@
                   </div>
                 </div>
                 <div class="custom-control custom-checkbox my-1 mr-sm-2">
-                  <input type="checkbox" class="custom-control-input" id="customControlInline">
-                  <label class="custom-control-label" for="customControlInline">I confirm that I am duly authorised to upload this bid on behalf of the supplier I represent.</label>
+                  <input type="checkbox" class="custom-control-input" id="uploadTenderDocsInputCheckboxAuthorised">
+                  <label class="custom-control-label" for="uploadTenderDocsInputCheckboxAuthorised">I confirm that I am duly authorised to upload this bid on behalf of the supplier I represent.</label>
                 </div>
                 <div class="custom-control custom-checkbox my-1 mr-sm-2">
-                  <input type="checkbox" class="custom-control-input" id="checkbox_Terms">
-                  <label class="custom-control-label" for="customControlInline">I agree to the <a href="#">Terms and Conditions</a>.</label>
+                  <input type="checkbox" class="custom-control-input" id="uploadTenderDocsInputCheckboxTerms">
+                  <label class="custom-control-label" for="uploadTenderDocsInputCheckboxTerms">I agree to the <a href="#">Terms and Conditions</a>.</label>
                 </div>
-                <button type="submit" class="btn btn-primary my-1">Upload Tender Documents</button>
+                <button type="submit" class="btn btn-primary my-1" id="uploadTenderDocsButtonSubmit">Upload Tender Documents</button>
               </form>
             </div>
           </div>
-          <div class="row align-items-center justify-content-center">
+          <div class="row align-items-center justify-content-center" id="verifyTenderDocsRow">
             <div class="col-md-8 order-md-1">
               <h4>
                 <p class="text-muted text-center">VERIFY TENDER DOCUMENTS</p>
               </h4>
               <small class="text-muted">10MB Size Limit for ZIP file</small>
-              <form class="card p-2">
+              <form class="card p-2" id="verifyTenderDocsForm">
                 <div class="custom-file mb-3">
-                  <input type="file" class="custom-file-input" id="customFileLang">
-                  <label class="custom-file-label" for="customFileLang">Upload ZIP file of tender documents</label>
+                  <input type="file" class="custom-file-input" id="verifyTenderDocsInputFileZIP" required>
+                  <label class="custom-file-label" for="verifyTenderDocsInputFileZIP">Upload ZIP file of tender documents</label>
                 </div>
-                <button type="submit" class="btn btn-primary my-1">Verify</button>
+                <button type="submit" class="btn btn-primary my-1" id="verifyTenderDocsButtonSubmit">Verify Tender Documents</button>
               </form>
             </div>
           </div>
