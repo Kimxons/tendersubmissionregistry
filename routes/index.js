@@ -26,10 +26,7 @@ router.post('/flash', function(req,res) {
     var post_message_type = req.body.message_type; //error or success
     var post_message_description = req.body.message_description;
     var flash_page = req.body.message_page;
-
-    req.flash("messages", {post_message_type : post_message_description});
-
-    res.locals.messages = req.flash();
+    req.flash(post_message_type, post_message_description);
 
     res.render(flash_page, {title: title, title_main: title_main, title_sub: title_sub});
 });
