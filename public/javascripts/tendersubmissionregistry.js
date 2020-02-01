@@ -21,7 +21,9 @@ $(document).ready(function() {
                   NOTIFICATION_BAR_DIV: "#divNotificationBar",
                   SUCCESS: "success",
                   ERROR: "error",
-                  WARNING: "warning"
+                  WARNING: "warning",
+                  KILO: 1000,
+                  MEGA: 1000000
                 };
 
     $(CONSTANTS.HOME_TENDER_DOCS_MENU_BUTTON).click(function() { displayRow(CONSTANTS.HOW_IT_WORKS) });
@@ -96,6 +98,8 @@ $(document).ready(function() {
                 return console.log(message_description);
 			}
         let fileReader = new FileReader();
+        let zip_filename = $(CONSTANTS.UPLOAD_TENDER_DOCS_INPUT_FILE_ZIP)[0].files[0].name; //his.files[0].name
+        let zip_filesize = ($(CONSTANTS.UPLOAD_TENDER_DOCS_INPUT_FILE_ZIP)[0].files[0].size)/CONSTANTS.MEGA;
         fileReader.onload = function() {
             let documentHash = sha256(fileReader.result);
             if (typeof web3 === 'undefined'){
@@ -105,6 +109,9 @@ $(document).ready(function() {
                 triggerNotificationOpen(CONSTANTS.NOTIFICATION_BAR_DIV, '"divUploadTenderZIPAlert"', message_description, message_type);
                 return console.log(message_description);
             }
+
+            console.log("ZIP File  " + zip_filename + " (size " + zip_filesize + "MB) successfully hashed (hash value "
+                + documentHash + ").");
 
             let contract = web3.eth.contract(documentRegistryContractABI).at(documentRegistryContractAddress);
             contract.add(documentHash, function(err, result) {
@@ -134,9 +141,16 @@ $(document).ready(function() {
             triggerNotificationOpen(CONSTANTS.NOTIFICATION_BAR_DIV, '"divVerifyTenderZIPAlert"', message_description, message_type);
             return console.log(message_description);
         }
+
+        //The FileReader object lets web applications asynchronously read the contents of files (or raw data buffers)
+        //stored on the user's computer, using File or Blob objects to specify the file or data to read.
+        //File objects may be obtained from a FileList object returned as a result of a user selecting files using the
+        // <input> element, from a drag and drop operation's DataTransfer object, or from the mozGetAsFile() API on an
+        // HTMLCanvasElement.
+
         let fileReader = new FileReader();
         fileReader.onload = function() {
-            let documentHash = sha256(fileReader.result);
+            let documentHash = sha256(fileReader.result); //fileReader.result is base64 encoded source of the file
             if (typeof web3 === 'undefined'){
                 var message_type = CONSTANTS.ERROR; //error or success
                 var message_description = "Please install MetaMask to access the Ethereum Web3 injected API from your Web browser.";
