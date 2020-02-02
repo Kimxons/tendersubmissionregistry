@@ -7,17 +7,17 @@ TSR has 3 main use cases:
 
 - Confirm timely submission of required tender documents
 
-Confirm Tender Documents are submitted before bid close datetime. Track 
+    - Confirm Tender Documents are submitted before bid close datetime.  
 
 
 - Track submission of tender documents
 
-Easily track who submitted a Tender Document pack (ZIP file). Details include Name, Surname and ID of individual of submitted the documents on behalf of the supplier company.
+    - Easily track who submitted a Tender Document pack (ZIP file). Details include Name, Surname and ID of individual of submitted the documents on behalf of the supplier company.
 
 
 - Confirm authenticity of Tender Document pack (ZIP file).
 
-At the time of vetting/reviewing tender applications and corresponding document packs (ZIP files), TSR can be used to confirm that the ZIP files that the tender issuiing company has on record have not been tampered with post online submission.
+    - At the time of vetting/reviewing tender applications and corresponding document packs (ZIP files), TSR can be used to confirm that the ZIP files that the tender issuiing company has on record have not been tampered with post online submission.
 
 ## Documentation
 - N/A
