@@ -11,7 +11,9 @@ $(document).ready(function() {
                   NOTIFICATION_BAR_ROW: "#notificationBarRow",
                   HOW_IT_WORKS: "#howItWorksTenderDocsRow",
                   UPLOAD_TENDER_DOCS: "#uploadTenderDocsRow",
+                  UPLOAD_TENDER_DOCS_FORM: "#uploadTenderDocsForm",
                   VERIFY_TENDER_DOCS: "#verifyTenderDocsRow",
+                  VERIFY_TENDER_DOCS_FORM: "#verifyTenderDocsForm",
                   UPLOAD_TENDER_DOCS_INPUT_FILE_ZIP: "#uploadTenderDocsInputFileZIP",
                   UPLOAD_TENDER_DOCS_LABEL_FILE_ZIP: "#uploadTenderDocsLabelFileZIP",
                   VERIFY_TENDER_DOCS_INPUT_FILE_ZIP: "#verifyTenderDocsInputFileZIP",
@@ -22,17 +24,20 @@ $(document).ready(function() {
                   SUCCESS: "success",
                   ERROR: "error",
                   WARNING: "warning",
+                  EMPTY_STRING: "",
                   KILO: 1000,
                   MEGA: 1000000
                 };
 
-    $(CONSTANTS.HOME_TENDER_DOCS_MENU_BUTTON).click(function() { displayRow(CONSTANTS.HOW_IT_WORKS) });
-    $(CONSTANTS.UPLOAD_TENDER_DOCS_MENU_BUTTON).click(function() { displayRow(CONSTANTS.UPLOAD_TENDER_DOCS) });
-    $(CONSTANTS.VERIFY_TENDER_DOCS_MENU_BUTTON).click(function() { displayRow(CONSTANTS.VERIFY_TENDER_DOCS) });
+    $(CONSTANTS.HOME_TENDER_DOCS_MENU_BUTTON).click(function() { displayRow(CONSTANTS.HOW_IT_WORKS, CONSTANTS.EMPTY_STRING) });
+    $(CONSTANTS.UPLOAD_TENDER_DOCS_MENU_BUTTON).click(function() { displayRow(CONSTANTS.UPLOAD_TENDER_DOCS,
+                                                                              CONSTANTS.UPLOAD_TENDER_DOCS_FORM) });
+    $(CONSTANTS.VERIFY_TENDER_DOCS_MENU_BUTTON).click(function() { displayRow(CONSTANTS.VERIFY_TENDER_DOCS,
+                                                                              CONSTANTS.VERIFY_TENDER_DOCS_FORM) });
     $(CONSTANTS.UPLOAD_TENDER_DOCS_BUTTON_SUBMIT).click(uploadTenderZIP);
     $(CONSTANTS.VERIFY_TENDER_DOCS_BUTTON_SUBMIT).click(verifyTenderZIP);
 
-    displayRow(CONSTANTS.HOW_IT_WORKS);
+    displayRow(CONSTANTS.HOW_IT_WORKS, CONSTANTS.EMPTY_STRING);
 
     // Show/Hide a "loading" indicator when AJAX request starts/completes:
     $(document).on({
@@ -63,17 +68,23 @@ $(document).ready(function() {
          var divNotificationHtml = '<div id='+alertDivID+' class="alert alert-danger fade in show"><button type="button" class="close close-alert" data-dismiss="alert" aria-hidden="true">×</button><strong>'+alertMessage+'</strong></div>';
       else if (alertType === CONSTANTS.WARNING)
           var divNotificationHtml = '<div id='+alertDivID+' class="alert alert-warning fade in show"><button type="button" class="close close-alert" data-dismiss="alert" aria-hidden="true">×</button><strong>'+alertMessage+'</strong></div>';
-      console.log(divNotificationHtml)
+      //console.log(divNotificationHtml);
       $(parentDivID).html(divNotificationHtml);
     };
     
-    function displayRow(rowName) {
+    function displayRow(rowName, formName) {
         // Hide rows
         $(CONSTANTS.LOADING).hide();
         $(CONSTANTS.HOW_IT_WORKS).hide();
         $(CONSTANTS.UPLOAD_TENDER_DOCS).hide();
         $(CONSTANTS.VERIFY_TENDER_DOCS).hide();
         $(CONSTANTS.NOTIFICATION_BAR_ROW).hide();
+
+        //reset form fields
+        console.log("formName " + formName);
+        if (formName !== CONSTANTS.EMPTY_STRING) {
+            $(formName).get(0).reset();
+        }
 
         // Display the passed in row
         $(rowName).show();
