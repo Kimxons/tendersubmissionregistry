@@ -1,22 +1,19 @@
 # Tender Submission Registry
 Tender Submission Registry (TSR) is a Blockchain powered (Ethereum DApp) procurement platform for tracing tender document submissions.
+TSR is used to Digitally sign tender documents (in zip format) at submission time and Verify authenticity of submissions during tender vetting process.
 
 ## Overview
-TSR is used to:
-
-- Digitally sign tender documents (in zip format) at submission time. 
-
-- Verify authenticity of submissions during tender vetting process.
-
-
 TSR has 3 main use cases:
+
 - Confirm timely submission of required tender documents
 
 Confirm Tender Documents are submitted before bid close datetime. Track 
 
+
 - Track submission of tender documents
 
 Easily track who submitted a Tender Document pack (ZIP file). Details include Name, Surname and ID of individual of submitted the documents on behalf of the supplier company.
+
 
 - Confirm authenticity of Tender Document pack (ZIP file).
 
