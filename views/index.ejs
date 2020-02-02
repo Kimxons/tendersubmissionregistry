@@ -52,7 +52,7 @@
               <small class="text-muted">10MB Size Limit for ZIP file</small>
               <form class="card p-2" id="uploadTenderDocsForm">
                 <div class="custom-file mb-3">
-                  <input type="file" class="custom-file-input" id="uploadTenderDocsInputFileZIP" required>
+                  <input type="file" accept=".zip,application/zip" class="custom-file-input" id="uploadTenderDocsInputFileZIP" required>
                   <label class="custom-file-label" for="uploadTenderDocsInputFileZIP" id="uploadTenderDocsLabelFileZIP">Upload ZIP file of tender documents</label>
                 </div>
                 <div class="row">
@@ -117,7 +117,7 @@
               <small class="text-muted">10MB Size Limit for ZIP file</small>
               <form class="card p-2" id="verifyTenderDocsForm">
                 <div class="custom-file mb-3">
-                  <input type="file" class="custom-file-input" data-text="Upload ZIP file of tender documents" data-dragdrop="true" id="verifyTenderDocsInputFileZIP" data-buttonBefore="true" required>
+                  <input type="file" accept=".zip,application/zip" class="custom-file-input" data-text="Upload ZIP file of tender documents" data-dragdrop="true" id="verifyTenderDocsInputFileZIP" data-buttonBefore="true" required>
                   <label class="custom-file-label" for="verifyTenderDocsInputFileZIP" id="verifyTenderDocsLabelFileZIP">Upload ZIP file of tender documents</label>
                 </div>
                 <button type="submit" class="btn btn-primary my-1" id="verifyTenderDocsButtonSubmit">Verify Tender Documents</button>
