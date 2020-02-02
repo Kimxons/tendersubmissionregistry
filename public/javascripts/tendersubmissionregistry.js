@@ -14,6 +14,8 @@ $(document).ready(function() {
                   UPLOAD_TENDER_DOCS_FORM: "#uploadTenderDocsForm",
                   VERIFY_TENDER_DOCS: "#verifyTenderDocsRow",
                   VERIFY_TENDER_DOCS_FORM: "#verifyTenderDocsForm",
+                  UPLOAD_TENDER_DOCS_INPUT_CHECKBOX_AUTH: "#uploadTenderDocsInputCheckboxAuthorised",
+                  UPLOAD_TENDER_DOCS_INPUT_CHECKBOX_TERMS: "#uploadTenderDocsInputCheckboxTerms",
                   UPLOAD_TENDER_DOCS_INPUT_FILE_ZIP: "#uploadTenderDocsInputFileZIP",
                   UPLOAD_TENDER_DOCS_LABEL_FILE_ZIP: "#uploadTenderDocsLabelFileZIP",
                   VERIFY_TENDER_DOCS_INPUT_FILE_ZIP: "#verifyTenderDocsInputFileZIP",
@@ -91,9 +93,30 @@ $(document).ready(function() {
     }
 
     async function uploadTenderZIP() {
+        $(CONSTANTS.NOTIFICATION_BAR_ROW).hide();
+
         if ($(CONSTANTS.UPLOAD_TENDER_DOCS_INPUT_FILE_ZIP)[0].files.length == 0){
             var message_type = CONSTANTS.ERROR; //error or success
             var message_description = "Please select a Tender Documents ZIP file to upload.";
+
+            triggerNotificationOpen(CONSTANTS.NOTIFICATION_BAR_DIV, '"divUploadTenderZIPAlert"', message_description, message_type);
+            return console.log(message_description);
+        }
+
+        console.log("CONSTANTS.UPLOAD_TENDER_DOCS_INPUT_CHECKBOX_AUTH " + $(CONSTANTS.UPLOAD_TENDER_DOCS_INPUT_CHECKBOX_AUTH)[0].checked);
+        console.log("CONSTANTS.UPLOAD_TENDER_DOCS_INPUT_CHECKBOX_TERMS " + $(CONSTANTS.UPLOAD_TENDER_DOCS_INPUT_CHECKBOX_TERMS)[0].checked);
+
+        if ($(CONSTANTS.UPLOAD_TENDER_DOCS_INPUT_CHECKBOX_AUTH)[0].checked === false){
+            var message_type = CONSTANTS.ERROR; //error or success
+            var message_description = "Please confirm that you are authorised to upload this bid.";
+
+            triggerNotificationOpen(CONSTANTS.NOTIFICATION_BAR_DIV, '"divUploadTenderZIPAlert"', message_description, message_type);
+            return console.log(message_description);
+        }
+
+        if ($(CONSTANTS.UPLOAD_TENDER_DOCS_INPUT_CHECKBOX_TERMS)[0].checked === false){
+            var message_type = CONSTANTS.ERROR; //error or success
+            var message_description = "Please confirm that you agree with the Terms and Conditions.";
 
             triggerNotificationOpen(CONSTANTS.NOTIFICATION_BAR_DIV, '"divUploadTenderZIPAlert"', message_description, message_type);
             return console.log(message_description);
@@ -145,6 +168,9 @@ $(document).ready(function() {
     }
 
     function verifyTenderZIP() {
+        $(CONSTANTS.NOTIFICATION_BAR_ROW).hide();
+
+
         if ($(CONSTANTS.VERIFY_TENDER_DOCS_INPUT_FILE_ZIP)[0].files.length == 0){
             var message_type = CONSTANTS.ERROR; //error or success
             var message_description = "Please select a Tender Documents ZIP file to verify.";
