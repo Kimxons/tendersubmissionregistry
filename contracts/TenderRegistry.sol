@@ -10,17 +10,17 @@ contract TenderRegistry {
         A struct in solidity is simply a loose bag of variables.
     */
     struct TenderSubmission {
-        string ZIPFileName;
-        string ZIPFileSize;
-        string ZIPFileHash;
-        string SubmitterFullName;
-        string SubmitterIdentificationNumber;
-        string TenderSummary;
-        string SupplierID;
-        string SubmissionDate;
-        uint256 BlockTime;
-        string AuthConfirmation;
-        string TermsConfirmation;
+        string ZIPFileName; // name of tender submission package zip file
+        string ZIPFileSize; // size of tender submission package zip file
+        string ZIPFileHash; // sha256 hash of tender submission package zip file
+        string SubmitterFullName; // name and surname of person uploading tender submission package on behalf of supplier
+        string SubmitterIdentificationNumber; // identification number of person uploading tender submission package
+        string TenderSummary; // Tender number and title
+        string SupplierID; // Supplier identification number
+        string SubmissionDate; // date and time of tender submission package zip upload
+        uint256 BlockTime;  // block time of tender submission package zip upload
+        string AuthConfirmation; // boolean indication of whether individual uploading tender package zip confirms their legal authority to act on behalf of supplier
+        string TermsConfirmation; // boolean indication of whether individual uploading tender package zip agrees with terms and conditions
     }
 
     /*
