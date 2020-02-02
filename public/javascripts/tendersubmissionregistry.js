@@ -109,7 +109,7 @@ $(document).ready(function() {
                 return console.log(message_description);
 			}
         let fileReader = new FileReader();
-        let zip_filename = $(CONSTANTS.UPLOAD_TENDER_DOCS_INPUT_FILE_ZIP)[0].files[0].name; //his.files[0].name
+        let zip_filename = $(CONSTANTS.UPLOAD_TENDER_DOCS_INPUT_FILE_ZIP)[0].files[0].name;
         let zip_filesize = ($(CONSTANTS.UPLOAD_TENDER_DOCS_INPUT_FILE_ZIP)[0].files[0].size)/CONSTANTS.MEGA;
         fileReader.onload = function() {
             let documentHash = sha256(fileReader.result);
@@ -160,6 +160,9 @@ $(document).ready(function() {
         // HTMLCanvasElement.
 
         let fileReader = new FileReader();
+        let zip_filename = $(CONSTANTS.UPLOAD_TENDER_DOCS_INPUT_FILE_ZIP)[0].files[0].name;
+        let zip_filesize = ($(CONSTANTS.UPLOAD_TENDER_DOCS_INPUT_FILE_ZIP)[0].files[0].size)/CONSTANTS.MEGA;
+
         fileReader.onload = function() {
             let documentHash = sha256(fileReader.result); //fileReader.result is base64 encoded source of the file
             if (typeof web3 === 'undefined'){
@@ -169,6 +172,10 @@ $(document).ready(function() {
                 triggerNotificationOpen(CONSTANTS.NOTIFICATION_BAR_DIV, '"divVerifyTenderZIPAlert"', message_description, message_type);
                 return console.log(message_description);
             }
+
+            console.log("ZIP File  " + zip_filename + " (size " + zip_filesize + "MB) successfully hashed (hash value "
+                + documentHash + ").");
+
             let contract = web3.eth.contract(documentRegistryContractABI).at(documentRegistryContractAddress);
             contract.verify(documentHash, function(err, result) {
                 if (err){
