@@ -1,6 +1,6 @@
 pragma solidity ^0.5.0; //solidity version
 
-///@title VTender Submission Registry
+///@title Tender Submission Registry
 
 //Smart contract
 contract TenderRegistry {
@@ -10,17 +10,13 @@ contract TenderRegistry {
         A struct in solidity is simply a loose bag of variables.
     */
     struct TenderSubmission {
-        string ZIPFileName; // name of tender submission package zip file
-        string ZIPFileSize; // size of tender submission package zip file
+        string ZIPFileDetails; // Dict of tender submission package ZIPFilename and ZIPFileSize
         string ZIPFileHash; // sha256 hash of tender submission package zip file
-        string SubmitterFullName; // name and surname of person uploading tender submission package on behalf of supplier
-        string SubmitterIdentificationNumber; // identification number of person uploading tender submission package
         string TenderSummary; // Tender number and title
-        string SupplierID; // Supplier identification number
+        string SupplierDetails; // Dict of SubmitterFullName, SubmitterIdentificationNumber, SupplierID
         string SubmissionDate; // date and time of tender submission package zip upload
         uint256 BlockTime;  // block time of tender submission package zip upload
-        string AuthConfirmation; // boolean indication of whether individual uploading tender package zip confirms their legal authority to act on behalf of supplier
-        string TermsConfirmation; // boolean indication of whether individual uploading tender package zip agrees with terms and conditions
+        uint IsSet; // integer indication of whether Tender Submission exists i.e. default is zero so if > 0 it exists
     }
 
     /*
@@ -29,29 +25,69 @@ contract TenderRegistry {
         The compiler to automatically generate a getter which allows us to do something like
         TenderSubmissionDetails = tendersMap(f149d75e984f1e919c4b896a0701637ff0260b834e1c18f3a9776c12fbf82311).
         A mapping is essentially a key-value store for storing and looking up data.
+        Mappings allow random access in a single step.
     */
     mapping(string => TenderSubmission) public tendersMap;
 
-    string[] public tenderHashes;  //array of tenderHashes made public because of length method
-
+    /*
+        A dynamically-sized string array containing tender hashes.
+        Array of tenderHashes made public because of length method.
+    */
+    string[] public tenderHashes;
 
 //    constructor () public {
 //        address contractOwner = msg.sender;
-//        registerTenderSubmission("test.zip", "0.433993MB", f149d75e984f1e919c4b896a0701637ff0260b834e1c18f3a9776c12fbf82311,
-//                                 "SubmitterFullName","SubmitterIdentificationNumber",
-//                                 "1001 - Fix and Supply Data Center Hardware", "SupplierID",
-//                                 "02-02-2020 19:00:00", "02-02-2020 19:00:00", "AuthConfirmation", "TermsConfirmation");
+//        registerTenderSubmission("{ZIPFIleName: test.zip", ZIPFileSize:"0.433993MB"},
+//                                  f149d75e984f1e919c4b896a0701637ff0260b834e1c18f3a9776c12fbf82311,
+//                                  {SubmitterFullName:"SubmitterFullName",
+//                                   SubmitterIdentificationNumber:"SubmitterIdentificationNumber",
+//                                   SupplierID:SupplierID},
+//                                 "1001 - Fix and Supply Data Center Hardware",
+//                                 "02-02-2020 19:00:00", "02-02-2020 19:00:00", 1);
 //    }
 
-
+    // Events that will be fired on changes.
     event registeredTenderEvent (
         uint indexed _songId
     );
+    /*
+        NB:
+        - "internal" functions can only be called from the contract itself (or from derived contracts).
+
+        - v0.5 breaking changes list that:
+            - Explicit data location for all variables of struct, array or mapping types is now mandatory.
+            - This is also applied to function parameters and return variables.
+
+        Recall that when a function's visibility is external, only external contracts can call that function.
+        When such an external call happens, the data of that call is stored in calldata. Reading from calldata is cheap
+        as compared to reading from memory which uses more data.
+
+        External functions = calldata, public functions = memory
+
+        How to Comment:
+        /**
+          * @dev Throws unless `msg.sender` is the current owner, an authorized operator, or the approved
+          * address for this NFT. Throws if `_from` is not the current owner. Throws if `_to` is the zero
+          * address. Throws if `_tokenId` is not a valid NFT. This function can be changed to payable.
+          * @notice The caller is responsible to confirm that `_to` is capable of receiving NFTs or else
+          * they maybe be permanently lost.
+          * @param _from The current owner of the NFT.
+          * @param _to The new owner.
+          * @param _tokenId The NFT to transfer.
+          *
+        function transferFrom(
+            address _from,
+            address _to,
+            uint256 _tokenId
+        )
+
+        If your struct has more than 7 variables, you may run into stack too deep error when creating or when
+        returning values from
+    */
     
-    function registerTenderSubmission ( string ZIPFileName, string ZIPFileSize, string ZIPFileHash,
-                                        string SubmitterFullName,
-                                        string SubmitterIdentificationNumber, string TenderSummary, string SupplierID,
-                                        string SubmissionDate, string AuthConfirmation, string TermsConfirmation)
+    function registerTenderSubmission ( string memory ZIPFileDetails, string memory ZIPFileHash,
+                                        string memory TenderSummary, string memory SupplierDetails,
+                                        string memory SubmissionDate)
                                         public returns(uint) {
         /*
             A function to register a Tender submission - it should add the Tender submission to the array of
@@ -62,19 +98,12 @@ contract TenderRegistry {
 
         //require (msg.sender == contractOwner);
 
-        var SubmissionBlocktime = block.timestamp;
-
-        //create a new TenderSubmission
-//        TenderSubmission memory newTenderSubmission = TenderSubmission(ZIPFileName, ZIPFileSize, ZIPFileHash, SubmitterFullName,
-//                                                                        SubmitterIdentificationNumber, TenderSummary,
-//                                                                        SupplierID, SubmissionDate, SubmissionBlocktime,
-//                                                                        AuthConfirmation, TermsConfirmation);
+        uint256 SubmissionBlocktime = block.timestamp;
+        uint256 IsSet = 1;
 
         // Creates new TenderSubmission struct and save in storage.
-        tendersMap[ZIPFileHash] = TenderSubmission(ZIPFileName, ZIPFileHash, SubmitterFullName,
-                                                                        SubmitterIdentificationNumber, TenderSummary,
-                                                                        SupplierID, SubmissionDate, SubmissionBlocktime,
-                                                                        AuthConfirmation, TermsConfirmation);
+        tendersMap[ZIPFileHash] = TenderSubmission(ZIPFileDetails, ZIPFileHash, TenderSummary,
+                                                   SupplierDetails, SubmissionDate, SubmissionBlocktime, IsSet);
 
         //add the Tenderhash to the array for length tracking
         uint id = tenderHashes.push(ZIPFileHash) - 1;
@@ -88,6 +117,7 @@ contract TenderRegistry {
         return id;
     }
 
+
     function getTenderSubmissionsCount() external view returns(uint) {
         /*
             a function to get the number of TenderSubmissions tracked on Blockchain i.e. length of tenderHashes array
@@ -96,34 +126,41 @@ contract TenderRegistry {
     }
 
 
-    function getTenderSubmission(string hash) external view returns (string, string, string, string, string, string,
-                                                                     string, string, uint256, string, string) {
+    function getTenderSubmission(string calldata hash) external view returns (string memory, string memory, string memory,
+                                                                     string memory, string memory, uint256, uint) {
         /*
-            a function to return the tender submission details if the hash exists in the map.
+            A function to return the tender submission details if the hash exists in the map.
+            Recall that a struct in solidity is simply a loose bag of variables so the return value cannot be a struct
+            but rather the individual variables.
         */
-        return tendersMap[hash];
+
+        return (tendersMap[hash].ZIPFileDetails, tendersMap[hash].ZIPFileHash, tendersMap[hash].TenderSummary,
+               tendersMap[hash].SupplierDetails, tendersMap[hash].SubmissionDate,
+               tendersMap[hash].BlockTime, tendersMap[hash].IsSet);
     }
 
-function getInstructor(address _address) view public returns (uint, string, string) {
-        return (instructors[_address].age, instructors[_address].fName, instructors[_address].lName);
-    }
-
-    function checkTenderSubmission(string calldata hash) external view returns (bool) {
+    function checkTenderSubmission(string memory hash) public view returns (bool) {
         /*
-            A function to confirm whether the hash exists in the submissions. Recall that when a function's visibility
-            is external, only external contracts can call that function. When such an external call happens,
-            the data of that call is stored in calldata. Reading from calldata is cheap as compared to reading from
-            memory which uses more data.
+            A function to confirm whether the hash exists in the submissions.
         */
-        for (uint i = 0; i < tenderHashes.length; i++){
-          // check whether the hash is among the list of known hashes
-          if (tenderHashes[i] == hash){
+
+        // check whether the hash is among the list of known hashes
+        uint onChainIsSet = tendersMap[hash].IsSet;
+        if (onChainIsSet > 0) {
             // if yes, return true
             return true;
           }
-        }
         // otherwise return false
         return false;
+    }
+
+    function() external {
+        /*
+            This i a fallback function which gets executed if a transaction with invalid data is sent to the contract or
+            just ether without data. We revert the send so that no-one
+            accidentally loses money when using the contract.
+        */
+    revert();
     }
 
 }
