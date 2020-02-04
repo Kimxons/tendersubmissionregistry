@@ -1,7 +1,10 @@
 $(document).ready(function() {
-    const documentRegistryContractAddress = '0x949c76215c7333c1697297fcd6307703aa77115d';
-    const documentRegistryContractABI = [{"constant":false,"inputs":[{"name":"hash","type":"string"}],"name":"add","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"hash","type":"string"}],"name":"verify","outputs":[{"name":"dateAdded","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"}];
+    const documentRegistryContractAddress = '0x3CF296C27FB23d81d4f48baD71f59Ddc76389905';
 
+    // The second is the Application Binary interface or the ABI of the contract code.
+    // ABI is just a list of method signatures, return types, members etc of the contract in a defined JSON format.
+    // This ABI is needed when you will call your contract from a real javascript client.
+    const documentRegistryContractABI = [{"constant": true,"inputs": [{"name": "","type": "string"}],"name": "tendersMap","outputs": [{"name": "ZIPFileDetails","type": "string"},{"name": "ZIPFileHash","type": "string"},{"name": "TenderSummary","type": "string"},{"name": "SupplierDetails","type": "string"},{"name": "SubmissionDate","type": "string"},{"name": "BlockTime","type": "uint256"},{"name": "IsSet","type": "uint256"}],"payable": false,"stateMutability": "view","type": "function" }, {"constant": true,"inputs": [{"name": "","type": "uint256"}],"name": "tenderHashes","outputs": [{"name": "","type": "string"}],"payable": false,"stateMutability": "view","type": "function" }, {"payable": false,"stateMutability": "nonpayable","type": "fallback" }, {"anonymous": false,"inputs": [{"indexed": true,"name": "_songId","type": "uint256"}],"name": "registeredTenderEvent","type": "event" }, {"constant": false,"inputs": [{"name": "ZIPFileDetails","type": "string"},{"name": "ZIPFileHash","type": "string"},{"name": "TenderSummary","type": "string"},{"name": "SupplierDetails","type": "string"},{"name": "SubmissionDate","type": "string"}],"name": "registerTenderSubmission","outputs": [{"name": "","type": "uint256"}],"payable": false,"stateMutability": "nonpayable","type": "function" }, {"constant": true,"inputs": [],"name": "getTenderSubmissionsCount","outputs": [{"name": "","type": "uint256"}],"payable": false,"stateMutability": "view","type": "function" }, {"constant": true,"inputs": [{"name": "hash","type": "string"}],"name": "getTenderSubmission","outputs": [{"name": "","type": "string"},{"name": "","type": "string"},{"name": "","type": "string"},{"name": "","type": "string"},{"name": "","type": "string"},{"name": "","type": "uint256"},{"name": "","type": "uint256"}],"payable": false,"stateMutability": "view","type": "function" }, {"constant": true,"inputs": [{"name": "hash","type": "string"}],"name": "checkTenderSubmission","outputs": [{"name": "","type": "bool"}],"payable": false,"stateMutability": "view","type": "function"}];
 
     var CONSTANTS = {
                   HOME_TENDER_DOCS_MENU_BUTTON : "#homeTenderDocsMenuButton",
@@ -21,6 +24,8 @@ $(document).ready(function() {
                   VERIFY_TENDER_DOCS_INPUT_CHECKBOX_TERMS: "#verifyTenderDocsInputCheckboxTerms",
                   VERIFY_TENDER_DOCS_INPUT_FILE_ZIP: "#verifyTenderDocsInputFileZIP",
                   VERIFY_TENDER_DOCS_LABEL_FILE_ZIP: "#verifyTenderDocsLabelFileZIP",
+                  UPLOAD_TENDER_DOCS_TENDER_NUM_SELECTED: "#uploadTenderDocsSelectTenderNum  :selected",
+                  UPLOAD_TENDER_DOCS_TENDER_SUPPLIER_ID: "#uploadTenderDocsInputTextSupplierID",
                   UPLOAD_TENDER_DOCS_BUTTON_SUBMIT: "#uploadTenderDocsButtonSubmit",
                   VERIFY_TENDER_DOCS_BUTTON_SUBMIT: "#verifyTenderDocsButtonSubmit",
                   NOTIFICATION_BAR_DIV: "#divNotificationBar",
@@ -136,6 +141,17 @@ $(document).ready(function() {
         let fileReader = new FileReader();
         let zip_filename = $(CONSTANTS.UPLOAD_TENDER_DOCS_INPUT_FILE_ZIP)[0].files[0].name;
         let zip_filesize = ($(CONSTANTS.UPLOAD_TENDER_DOCS_INPUT_FILE_ZIP)[0].files[0].size)/CONSTANTS.MEGA;
+        let webZipFileDetails = "ZIP File  " + zip_filename + " (size " + zip_filesize + "MB)";
+
+        // Get selected value in dropdown list using JavaScript
+        // $("#elementId :selected").text(); // The text content of the selected option
+        // $("#elementId :selected").val(); // The value of the selected option
+        let tender_num = $(CONSTANTS.UPLOAD_TENDER_DOCS_TENDER_NUM_SELECTED).text();
+
+        let supplier_id = $(CONSTANTS.UPLOAD_TENDER_DOCS_TENDER_SUPPLIER_ID).val();
+
+        let submission_date = new String(Date());
+
         fileReader.onload = function() {
             let documentHash = sha256(fileReader.result);
             if (typeof web3 === 'undefined'){
@@ -149,21 +165,40 @@ $(document).ready(function() {
             console.log("ZIP File  " + zip_filename + " (size " + zip_filesize + "MB) successfully hashed (hash value "
                 + documentHash + ").");
 
+             //solidityContext required if you use msg object in contract function e.g. msg.sender
+             var solidityContext = {from: web3.eth.accounts[1], gas:3000000}; //add gas to avoid out of gas exception
+
+            // TSR contract registerTenderSubmission
+            // (string memory ZIPFileDetails, string memory ZIPFileHash,
+            // string memory TenderSummary, string memory SupplierDetails,
+            // string memory SubmissionDate)
+
+            // registerTenderSubmission(
+            // "{ZIPFIleName: test.zip", ZIPFileSize:"0.433993MB"},
+            // f149d75e984f1e919c4b896a0701637ff0260b834e1c18f3a9776c12fbf82311,
+            // {SubmitterFullName:"SubmitterFullName", SubmitterIdentificationNumber:"SubmitterIdentificationNumber",SupplierID:SupplierID},
+            // "1001 - Fix and Supply Data Center Hardware"),
+            // "Tue Feb 04 2020 23:38:39 GMT+0200 (South Africa Standard Time)");
+
+            console.log("Test before sumbit - webZipFileDetails: " + webZipFileDetails + ", documentHash: " +  documentHash +
+                    ", tender_num: " + tender_num  + ",supplier_id: " + supplier_id + ", submission_date:" + submission_date);
+
+            //Load the contract schema from the abi and Instantiate the contract by address
             let contract = web3.eth.contract(documentRegistryContractABI).at(documentRegistryContractAddress);
-            contract.add(documentHash, function(err, result) {
-                if (err){
-                    var message_type = CONSTANTS.ERROR; //error or success
-                    var message_description = "Tender Submission Registry smart contract call failed: " + err;
-
-                    triggerNotificationOpen(CONSTANTS.NOTIFICATION_BAR_DIV, '"divUploadTenderZIPAlert"', message_description, message_type);
-                    return console.log("Smart contract call failed: " + err);
-                }
-
-                var message_type = CONSTANTS.SUCCESS; //error or success
-                var message_description = `Tender Documents ZIP file with hash ${documentHash} <b>successfully added</b> to the Tender Submission Registry (Blockchain).`;
+            contract.registerTenderSubmission(webZipFileDetails, documentHash, tender_num, supplier_id, "ABC", function(err, result) {
+            if (err){
+                var message_type = CONSTANTS.ERROR; //error or success
+                var message_description = "Tender Submission Registry smart contract call failed: " + err;
 
                 triggerNotificationOpen(CONSTANTS.NOTIFICATION_BAR_DIV, '"divUploadTenderZIPAlert"', message_description, message_type);
-                console.log(message_description);
+                return console.log("Smart contract call failed: " + err);
+            }
+
+            var message_type = CONSTANTS.SUCCESS; //error or success
+            var message_description = `Tender Documents ZIP file with hash ${documentHash} <b>successfully added</b> to the Tender Submission Registry (Blockchain).`;
+
+            triggerNotificationOpen(CONSTANTS.NOTIFICATION_BAR_DIV, '"divUploadTenderZIPAlert"', message_description, message_type);
+            console.log(message_description);
             });
         };
         fileReader.readAsBinaryString($(CONSTANTS.UPLOAD_TENDER_DOCS_INPUT_FILE_ZIP)[0].files[0]);
@@ -213,7 +248,7 @@ $(document).ready(function() {
                 + documentHash + ").");
 
             let contract = web3.eth.contract(documentRegistryContractABI).at(documentRegistryContractAddress);
-            contract.verify(documentHash, function(err, result) {
+            contract.getTenderSubmission(documentHash, function(err, result) {
                 if (err){
                     var message_type = CONSTANTS.ERROR; //error or success
                     var message_description = "Tender Submission Registry smart contract call failed: " + err;
