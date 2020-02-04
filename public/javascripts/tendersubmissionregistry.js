@@ -165,8 +165,8 @@ $(document).ready(function() {
             console.log("ZIP File  " + zip_filename + " (size " + zip_filesize + "MB) successfully hashed (hash value "
                 + documentHash + ").");
 
-             //solidityContext required if you use msg object in contract function e.g. msg.sender
-             var solidityContext = {from: web3.eth.accounts[1], gas:3000000}; //add gas to avoid out of gas exception
+             // solidityContext required if you use msg object in contract function e.g. msg.sender
+             // var solidityContext = {from: web3.eth.accounts[1], gas:3000000}; //add gas to avoid out of gas exception
 
             // TSR contract registerTenderSubmission
             // (string memory ZIPFileDetails, string memory ZIPFileHash,
@@ -185,7 +185,8 @@ $(document).ready(function() {
 
             //Load the contract schema from the abi and Instantiate the contract by address
             let contract = web3.eth.contract(documentRegistryContractABI).at(documentRegistryContractAddress);
-            contract.registerTenderSubmission(webZipFileDetails, documentHash, tender_num, supplier_id, "ABC", function(err, result) {
+            contract.registerTenderSubmission(webZipFileDetails, documentHash, tender_num, supplier_id, submission_date.toString(),
+                function(err, result) {
             if (err){
                 var message_type = CONSTANTS.ERROR; //error or success
                 var message_description = "Tender Submission Registry smart contract call failed: " + err;
@@ -257,6 +258,7 @@ $(document).ready(function() {
                     return console.log(message_description);
                 }
 
+                console.log("result: " + result);
                 let contractPublishDate = result.toNumber(); // Take the output from the execution
                 if (contractPublishDate > 0) {
                     let displayDate = new Date(contractPublishDate * 1000).toLocaleString();
