@@ -275,16 +275,47 @@ $(document).ready(function() {
                     return console.log(message_description);
                 }
 
+                // result:
+                // ZIPFileDetails
+                // ZIPFileHash
+                // TenderSummary
+                // SupplierDetails
+                // SubmissionDate
+                // SubmissionBlocktime
+                // IsSet
+
+                //result:
+                // ZIP File  test.zip (size 0.433993MB),
+                // f149d75e984f1e919c4b896a0701637ff0260b834e1c18f3a9776c12fbf82311,
+                // 1003 - Train Data Center Operators,
+                // 123,
+                // Wed Feb 05 2020 00:09:56 GMT+0200 (South Africa Standard Time),
+                // 1580854200,
+                // 1
+
+                // Output from the contract function call
                 console.log("result: " + result);
-                let contractPublishDate = result.toNumber(); // Output from the contract function call
-                if (contractPublishDate > 0) {
-                    let displayDate = new Date(contractPublishDate * 1000).toLocaleString();
+
+                let contractIsSet = result[6].toNumber();
+
+                console.log("contractIsSet: " + contractIsSet);
+                console.log("result[0]: " + result[0]);
+                console.log("(contractIsSet > 0): " + (contractIsSet > 0));
+
+                if (contractIsSet > 0) {
+                    let contractZIPFileDetails = result[0];
+                    let contractZIPFileHash = result[1];
+                    let contractTenderSummary = result[2];
+                    let contractSupplierDetails = result[3];
+                    let contractSubmissionDate = result[4];
+                    let contractSubmissionBlocktime = result[5];
+                    let displayDate = new Date(contractSubmissionBlocktime * 1000).toLocaleString();
 
                     var message_type = CONSTANTS.SUCCESS; //error or success
-                    var message_description =`Tender Documents ZIP file with hash ${documentHash} is <b>valid<b>. Uploaded to Tender Submission Registry (Blockchain) on: ${displayDate}.`;
+                    var message_description =`Tender Documents ZIP file with hash ${documentHash} is <b>valid</b>. Uploaded to Tender Submission Registry (Blockchain) on: ${contractSubmissionDate}.`;
 
                     triggerNotificationOpen(CONSTANTS.NOTIFICATION_BAR_DIV, '"divVerifyTenderZIPAlert"', message_description, message_type);
-                    console.log(message_description);
+                    return console.log(message_description);
                 }
                 else
                     var message_type = CONSTANTS.ERROR; //error or success
