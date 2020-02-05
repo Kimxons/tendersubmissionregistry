@@ -10,6 +10,7 @@ $(document).ready(function() {
                   HOME_TENDER_DOCS_MENU_BUTTON : "#homeTenderDocsMenuButton",
                   UPLOAD_TENDER_DOCS_MENU_BUTTON : "#uploadTenderDocsMenuButton",
                   VERIFY_TENDER_DOCS_MENU_BUTTON : "#verifyTenderDocsMenuButton",
+                  GET_TENDER_DOCS_COUNT_MENU_BUTTON : "#getTenderDocsCountMenuButton",
                   LOADING : "#loadingRow",
                   NOTIFICATION_BAR_ROW: "#notificationBarRow",
                   HOW_IT_WORKS: "#howItWorksTenderDocsRow",
@@ -29,6 +30,7 @@ $(document).ready(function() {
                   UPLOAD_TENDER_DOCS_BUTTON_SUBMIT: "#uploadTenderDocsButtonSubmit",
                   VERIFY_TENDER_DOCS_BUTTON_SUBMIT: "#verifyTenderDocsButtonSubmit",
                   NOTIFICATION_BAR_DIV: "#divNotificationBar",
+                  GET_TENDER_DOCS_COUNT_ROW: "#getTenderDocsCountRow",
                   TENDER_DOCS_COUNT_BUTTON: "#tenderDocsCountButton",
                   TENDER_DOCS_COUNT_DIV: "#getTenderDocsCount",
                   SUCCESS: "success",
@@ -40,11 +42,18 @@ $(document).ready(function() {
                 };
 
     $(CONSTANTS.HOME_TENDER_DOCS_MENU_BUTTON).click(function() { displayRow(CONSTANTS.HOW_IT_WORKS, CONSTANTS.EMPTY_STRING) });
+
     $(CONSTANTS.UPLOAD_TENDER_DOCS_MENU_BUTTON).click(function() { displayRow(CONSTANTS.UPLOAD_TENDER_DOCS,
                                                                               CONSTANTS.UPLOAD_TENDER_DOCS_FORM) });
+
     $(CONSTANTS.VERIFY_TENDER_DOCS_MENU_BUTTON).click(function() { displayRow(CONSTANTS.VERIFY_TENDER_DOCS,
                                                                               CONSTANTS.VERIFY_TENDER_DOCS_FORM) });
+
+    $(CONSTANTS.GET_TENDER_DOCS_COUNT_MENU_BUTTON).click(function() { displayRow(CONSTANTS.GET_TENDER_DOCS_COUNT_ROW,
+                                                                              CONSTANTS.EMPTY_STRING) });
+
     $(CONSTANTS.UPLOAD_TENDER_DOCS_BUTTON_SUBMIT).click(uploadTenderZIP);
+
     $(CONSTANTS.VERIFY_TENDER_DOCS_BUTTON_SUBMIT).click(verifyTenderZIP);
 
     displayRow(CONSTANTS.HOW_IT_WORKS, CONSTANTS.EMPTY_STRING);
@@ -93,6 +102,7 @@ $(document).ready(function() {
         $(CONSTANTS.HOW_IT_WORKS).hide();
         $(CONSTANTS.UPLOAD_TENDER_DOCS).hide();
         $(CONSTANTS.VERIFY_TENDER_DOCS).hide();
+        $(CONSTANTS.GET_TENDER_DOCS_COUNT_ROW).hide();
         $(CONSTANTS.NOTIFICATION_BAR_ROW).hide();
 
         //reset form fields
