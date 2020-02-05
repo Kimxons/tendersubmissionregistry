@@ -29,6 +29,8 @@ $(document).ready(function() {
                   UPLOAD_TENDER_DOCS_BUTTON_SUBMIT: "#uploadTenderDocsButtonSubmit",
                   VERIFY_TENDER_DOCS_BUTTON_SUBMIT: "#verifyTenderDocsButtonSubmit",
                   NOTIFICATION_BAR_DIV: "#divNotificationBar",
+                  TENDER_DOCS_COUNT_BUTTON: "#tenderDocsCountButton",
+                  TENDER_DOCS_COUNT_DIV: "#getTenderDocsCount",
                   SUCCESS: "success",
                   ERROR: "error",
                   WARNING: "warning",
@@ -65,6 +67,11 @@ $(document).ready(function() {
         var fileName = $(this).val();
         //replace the "Choose a file" label
         $(this).next(CONSTANTS.UPLOAD_TENDER_DOCS_LABEL_FILE_ZIP).html(fileName);
+    });
+
+    $(CONSTANTS.TENDER_DOCS_COUNT_BUTTON).click(function (e) {
+      e.preventDefault();
+      getTenderDocsCount();
     });
 
     function triggerNotificationOpen(parentDivID, alertDivID, alertMessage, alertType) {
@@ -259,7 +266,7 @@ $(document).ready(function() {
                 }
 
                 console.log("result: " + result);
-                let contractPublishDate = result.toNumber(); // Take the output from the execution
+                let contractPublishDate = result.toNumber(); // Output from the contract function call
                 if (contractPublishDate > 0) {
                     let displayDate = new Date(contractPublishDate * 1000).toLocaleString();
 
@@ -278,5 +285,33 @@ $(document).ready(function() {
             });
         };
         fileReader.readAsBinaryString($(CONSTANTS.VERIFY_TENDER_DOCS_INPUT_FILE_ZIP)[0].files[0]);
+    }
+
+    function getTenderDocsCount() {
+        if (typeof web3 === 'undefined'){
+                var message_type = CONSTANTS.ERROR; //error or success
+                var message_description = "Please install MetaMask to access the Ethereum Web3 injected API from your Web browser.";
+
+                triggerNotificationOpen(CONSTANTS.NOTIFICATION_BAR_DIV, '"divVerifyTenderZIPAlert"', message_description, message_type);
+                return console.log(message_description);
+            }
+
+        let contract = web3.eth.contract(documentRegistryContractABI).at(documentRegistryContractAddress);
+            contract.getTenderSubmissionsCount(function(err, result) {
+                if (err){
+                    var message_type = CONSTANTS.ERROR; //error or success
+                    var message_description = "Tender Submission Registry smart contract call failed: " + err;
+
+                    triggerNotificationOpen(CONSTANTS.NOTIFICATION_BAR_DIV, '"divVerifyTenderZIPAlert"', message_description, message_type);
+                    return console.log(message_description);
+                }
+
+                let tenderSubmissionsCount = result.toNumber(); // Output from the contract function call
+
+                console.log("getTenderSubmissionsCount: " + tenderSubmissionsCount);
+
+                var tenderSubmissionsCountHtml = '<div class="alert alert-success fade in show"><button type="button" class="close close-alert" data-dismiss="alert" aria-hidden="true">×</button><strong>Number of Tender Submissions: </strong>' + tenderSubmissionsCount +'</div>'
+                $(CONSTANTS.TENDER_DOCS_COUNT_DIV).html(tenderSubmissionsCountHtml);
+        });
     }
 });
