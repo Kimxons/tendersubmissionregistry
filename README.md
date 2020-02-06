@@ -94,33 +94,38 @@ $npm run dev
 ```
 
 ## Other
-1. Access deployed contract from CLI
+1. To run all tests
+```
+$ truffle test
+```
+
+2. Access deployed contract from CLI
 ```
 $ truffle console
 $ CONTRACTNAME.deployed().then(function(instance) { app = instance })
 $ app.CONTRACTFUNCTION()
 ```
 
-2. Add a new migration
+3. Add a new migration
 ```
 $touch 2_deploy_contract.js
 ```
 
-3. Create infura project  at https://infura.io (Infura gives you access to test network).
+4. Create infura project  at https://infura.io (Infura gives you access to test network).
 This project will give you an ID that you will use in `truffle-config.js`
 infura means you do not have to sync an ether node or rinkeby node to deploy directly.
 
-4. Get test ether from https://faucet.rinkeby.io/ (you will need to create an Ethereum rinkeby wallet on MetaMask then use the address on twitter).
+5. Get test ether from https://faucet.rinkeby.io/ (you will need to create an Ethereum rinkeby wallet on MetaMask then use the address on twitter).
 e.g. 0x4B67D20a4F27d248aF0462C23F8C193f073517FB
 
-5. Update `truffle-config.js` with rinkeby. This will deploy from the metamask accounts, by default account 0 so specify which one you want.
+6. Update `truffle-config.js` with rinkeby. This will deploy from the metamask accounts, by default account 0 so specify which one you want.
 
-6. Deploy to rinkeby. 
+7. Deploy to rinkeby. 
 ```
 $truffle migrate --network rinkeby --compile-all --reset
 ```
 
-7. Check contract on rinkeby etherscan https://rinkeby.etherscan.io
+8. Check contract on rinkeby etherscan https://rinkeby.etherscan.io
 
 
 ## Production Deployment
