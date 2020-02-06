@@ -58,12 +58,15 @@ contract('TenderRegistry', function (accounts) {
     // register a Tender Submission to the registry
     let tenderSubmissionIndex = await TenderRegistryInstance.registerTenderSubmission(ZIPFileDetails, ZIPFileHash, TenderSummary, SupplierDetails, SubmissionDate);
 
-    // now we'll check that the events are correct
-    // assert.equal(events.length, 1);
+    let event = tenderSubmissionIndex.logs.some(l => { return l.event == "registeredTenderEvent" });
 
-    //check return value is zero
-    assert.equal(tenderSubmissionIndex, initialTenderSubmissionCounter, 'Tender submission was not added successfully');
+    // console.log(tenderSubmissionIndex.tx); // this works
+    // console.log(tenderSubmissionIndex.logs); // this works
+    // console.log(tenderSubmissionIndex.receipt); // this works
 
+    // now we'll check that the registeredTenderEvent is emitted
+    //console.log("event " + event); // output: event true
+    assert.equal(event, true, 'Event registeredTenderEvent not emitted');
   });
 
   it('should increment Tender Submission hash array after adding to registry', async function () {
@@ -79,6 +82,7 @@ contract('TenderRegistry', function (accounts) {
     //retrieve from map using string array indexing
     //let TenderRegistryInstance = await TenderRegistry.deployed();
     let tenderSubmissionCounter = await TenderRegistryInstance.getTenderSubmissionsCount();
+    console.log("tenderSubmissionCounter " + tenderSubmissionCounter);
     let latestHash = await TenderRegistry.tenderHashes[tenderSubmissionCounter - 1];
 
     // check that it returns a match
