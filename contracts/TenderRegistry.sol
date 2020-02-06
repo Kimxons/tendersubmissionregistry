@@ -48,7 +48,7 @@ contract TenderRegistry {
 
     // Events that will be fired on changes.
     event registeredTenderEvent (
-        uint indexed _songId
+        uint indexed _tenderSubmissionId
     );
     /*
         NB:
