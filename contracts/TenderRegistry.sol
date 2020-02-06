@@ -125,6 +125,13 @@ contract TenderRegistry {
        return tenderHashes.length;
     }
 
+    function getZipFileHashByIndex(uint256 arrayIndex) external view returns(string memory) {
+        /*
+            a function to get a ZIPFileHash from tenderHash array using array index
+        */
+       return tenderHashes[arrayIndex];
+    }
+
 
     function getTenderSubmission(string calldata hash) external view returns (string memory, string memory, string memory,
                                                                      string memory, string memory, uint256, uint) {
