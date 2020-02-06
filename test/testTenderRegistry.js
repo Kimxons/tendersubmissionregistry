@@ -83,7 +83,12 @@ contract('TenderRegistry', function (accounts) {
     //let TenderRegistryInstance = await TenderRegistry.deployed();
     let tenderSubmissionCounter = await TenderRegistryInstance.getTenderSubmissionsCount();
     console.log("tenderSubmissionCounter " + tenderSubmissionCounter);
-    let latestHash = await TenderRegistry.tenderHashes[tenderSubmissionCounter - 1];
+
+    let latestTenderHashArrayIndex = tenderSubmissionCounter - 1;
+    console.log("latestTenderHashArrayIndex " + latestTenderHashArrayIndex);
+
+    let latestHash = await TenderRegistryInstance.getZipFileHashByIndex(latestTenderHashArrayIndex);
+    console.log("latestHash " + latestHash);
 
     // check that it returns a match
     assert.equal(latestHash, ZIPFileHash, 'Hash retrieved from Blockchain does not match latest submission');
