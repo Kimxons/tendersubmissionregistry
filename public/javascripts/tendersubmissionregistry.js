@@ -201,6 +201,10 @@ $(document).ready(function() {
                     ", tender_num: " + tender_num  + ",supplier_id: " + supplier_id + ", submission_date:" + submission_date);
 
             //Load the contract schema from the abi and Instantiate the contract by address
+            // at(): Create an instance of MyContract that represents your contract at a specific address.
+            // deployed(): Create an instance of MyContract that represents the default address managed by MyContract.
+            // new(): Deploy a new version of this contract to the network, getting an instance of MyContract that represents the newly deployed instance.
+
             let contract = web3.eth.contract(documentRegistryContractABI).at(documentRegistryContractAddress);
             contract.registerTenderSubmission(webZipFileDetails, documentHash, tender_num, supplier_id, submission_date.toString(),
                 function(err, result) {
