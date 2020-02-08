@@ -26,6 +26,8 @@ $(document).ready(function() {
                   VERIFY_TENDER_DOCS_INPUT_FILE_ZIP: "#verifyTenderDocsInputFileZIP",
                   VERIFY_TENDER_DOCS_LABEL_FILE_ZIP: "#verifyTenderDocsLabelFileZIP",
                   UPLOAD_TENDER_DOCS_TENDER_NUM_SELECTED: "#uploadTenderDocsSelectTenderNum  :selected",
+                  UPLOAD_TENDER_DOCS_TENDER_SUBMITTED_BY: "#uploadTenderDocsInputTextSubmittedBy",
+                  UPLOAD_TENDER_DOCS_TENDER_SUBMITTED_BY_ID: "#uploadTenderDocsInputTextIDNum",
                   UPLOAD_TENDER_DOCS_TENDER_SUPPLIER_ID: "#uploadTenderDocsInputTextSupplierID",
                   UPLOAD_TENDER_DOCS_BUTTON_SUBMIT: "#uploadTenderDocsButtonSubmit",
                   VERIFY_TENDER_DOCS_BUTTON_SUBMIT: "#verifyTenderDocsButtonSubmit",
@@ -36,24 +38,30 @@ $(document).ready(function() {
                   SUCCESS: "success",
                   ERROR: "error",
                   WARNING: "warning",
+                  CHOOSE_A_FILE_LABEL: "Choose a file",
                   EMPTY_STRING: "",
                   KILO: 1000,
                   MEGA: 1000000
                 };
 
+    // display the how it works section i.e. landing page after clicking on TSR title / logo at top of the page
     $(CONSTANTS.HOME_TENDER_DOCS_MENU_BUTTON).click(function() { displayRow(CONSTANTS.HOW_IT_WORKS, CONSTANTS.EMPTY_STRING) });
 
+    // display the upload tender docs form after menu button click
     $(CONSTANTS.UPLOAD_TENDER_DOCS_MENU_BUTTON).click(function() { displayRow(CONSTANTS.UPLOAD_TENDER_DOCS,
                                                                               CONSTANTS.UPLOAD_TENDER_DOCS_FORM) });
 
+    // display the verify tender docs form  after menu button click
     $(CONSTANTS.VERIFY_TENDER_DOCS_MENU_BUTTON).click(function() { displayRow(CONSTANTS.VERIFY_TENDER_DOCS,
                                                                               CONSTANTS.VERIFY_TENDER_DOCS_FORM) });
 
+    // display the tender docs count button after menu button click
     $(CONSTANTS.GET_TENDER_DOCS_COUNT_MENU_BUTTON).click(function() { displayRow(CONSTANTS.GET_TENDER_DOCS_COUNT_ROW,
                                                                               CONSTANTS.EMPTY_STRING) });
-
+    // call uploadTenderZIP function on button click
     $(CONSTANTS.UPLOAD_TENDER_DOCS_BUTTON_SUBMIT).click(uploadTenderZIP);
 
+    // call verifyTenderZIP function on button click
     $(CONSTANTS.VERIFY_TENDER_DOCS_BUTTON_SUBMIT).click(verifyTenderZIP);
 
     displayRow(CONSTANTS.HOW_IT_WORKS, CONSTANTS.EMPTY_STRING);
@@ -63,7 +71,8 @@ $(document).ready(function() {
         ajaxStart: function() { $(CONSTANTS.LOADING).show() }, //ajaxStart specifies a function to run when the first AJAX request begins
         ajaxStop: function() { $(CONSTANTS.LOADING).hide() } //ajaxStop specifies a function to run when all AJAX requests have completed
     });
-    
+
+    // update file input label to selected file
     $(CONSTANTS.VERIFY_TENDER_DOCS_INPUT_FILE_ZIP).on('change',function(){
         //get the file name
         var fileName = $(this).val();
@@ -71,6 +80,7 @@ $(document).ready(function() {
         $(this).next(CONSTANTS.VERIFY_TENDER_DOCS_LABEL_FILE_ZIP).html(fileName);
     });
 
+    // update file input label to selected file
     $(CONSTANTS.UPLOAD_TENDER_DOCS_INPUT_FILE_ZIP).on('change',function(){
         //get the file name
         var fileName = $(this).val();
@@ -78,11 +88,13 @@ $(document).ready(function() {
         $(this).next(CONSTANTS.UPLOAD_TENDER_DOCS_LABEL_FILE_ZIP).html(fileName);
     });
 
+    // trigger smart contract call to getTenderSubmissionsCount() function after clicking on tender docs count button
     $(CONSTANTS.TENDER_DOCS_COUNT_BUTTON).click(function (e) {
       e.preventDefault();
       getTenderDocsCount();
     });
 
+    //function to trigger notification bar at the top of the page
     function triggerNotificationOpen(parentDivID, alertDivID, alertMessage, alertType) {
       console.log("triggerNotificationOpen");
       $(CONSTANTS.NOTIFICATION_BAR_ROW).show();
@@ -95,7 +107,8 @@ $(document).ready(function() {
       //console.log(divNotificationHtml);
       $(parentDivID).html(divNotificationHtml);
     };
-    
+
+    //function to display row based on menu button selection
     function displayRow(rowName, formName) {
         // Hide rows
         $(CONSTANTS.LOADING).hide();
@@ -115,6 +128,7 @@ $(document).ready(function() {
         $(rowName).show();
     }
 
+    // function to upload Tender ZIP file
     async function uploadTenderZIP() {
         $(CONSTANTS.NOTIFICATION_BAR_ROW).hide();
 
@@ -122,6 +136,7 @@ $(document).ready(function() {
             var message_type = CONSTANTS.ERROR; //error or success
             var message_description = "Please select a Tender Documents ZIP file to upload.";
 
+            //trigger notification
             triggerNotificationOpen(CONSTANTS.NOTIFICATION_BAR_DIV, '"divUploadTenderZIPAlert"', message_description, message_type);
             return console.log(message_description);
         }
@@ -133,6 +148,7 @@ $(document).ready(function() {
             var message_type = CONSTANTS.ERROR; //error or success
             var message_description = "Please confirm that you are authorised to upload this bid.";
 
+            //trigger notification
             triggerNotificationOpen(CONSTANTS.NOTIFICATION_BAR_DIV, '"divUploadTenderZIPAlert"', message_description, message_type);
             return console.log(message_description);
         }
@@ -141,6 +157,7 @@ $(document).ready(function() {
             var message_type = CONSTANTS.ERROR; //error or success
             var message_description = "Please confirm that you agree with the Terms and Conditions.";
 
+            //trigger notification
             triggerNotificationOpen(CONSTANTS.NOTIFICATION_BAR_DIV, '"divUploadTenderZIPAlert"', message_description, message_type);
             return console.log(message_description);
         }
@@ -152,6 +169,7 @@ $(document).ready(function() {
                 var message_type = CONSTANTS.ERROR; //error or success
                 var message_description = "Access to your Ethereum account rejected.";
 
+                //trigger notification
                 triggerNotificationOpen(CONSTANTS.NOTIFICATION_BAR_DIV, '"divUploadTenderZIPAlert"', message_description, message_type);
                 return console.log(message_description);
 			}
@@ -165,7 +183,14 @@ $(document).ready(function() {
         // $("#elementId :selected").val(); // The value of the selected option
         let tender_num = $(CONSTANTS.UPLOAD_TENDER_DOCS_TENDER_NUM_SELECTED).text();
 
+        let supplier_submitter_fullname = $(CONSTANTS.UPLOAD_TENDER_DOCS_TENDER_SUBMITTED_BY).val();
+        let supplier_submitter_id = $(CONSTANTS.UPLOAD_TENDER_DOCS_TENDER_SUBMITTED_BY_ID).val();
         let supplier_id = $(CONSTANTS.UPLOAD_TENDER_DOCS_TENDER_SUPPLIER_ID).val();
+        let supplier_details = '{SubmitterFullName:'+supplier_submitter_fullname + ', ' +
+                               ' SubmitterIdentificationNumber: ' + supplier_submitter_id +
+                               ' SupplierID: ' + supplier_id + '}';
+        //let supplier_details = '{SubmitterFullName:"John Doe", SubmitterIdentificationNumber:"12345678",SupplierID:123}';
+
 
         let submission_date = new String(Date());
 
@@ -175,6 +200,7 @@ $(document).ready(function() {
                 var message_type = CONSTANTS.ERROR; //error or success
                 var message_description = "Please install MetaMask to access the Ethereum Web3 injected API from your Web browser.";
 
+                //trigger notification
                 triggerNotificationOpen(CONSTANTS.NOTIFICATION_BAR_DIV, '"divUploadTenderZIPAlert"', message_description, message_type);
                 return console.log(message_description);
             }
@@ -198,7 +224,7 @@ $(document).ready(function() {
             // "Tue Feb 04 2020 23:38:39 GMT+0200 (South Africa Standard Time)");
 
             console.log("Test before sumbit - webZipFileDetails: " + webZipFileDetails + ", documentHash: " +  documentHash +
-                    ", tender_num: " + tender_num  + ",supplier_id: " + supplier_id + ", submission_date:" + submission_date);
+                    ", tender_num: " + tender_num  + ",supplier_details: " + supplier_details + ", submission_date:" + submission_date);
 
             //Load the contract schema from the abi and Instantiate the contract by address
             // at(): Create an instance of MyContract that represents your contract at a specific address.
@@ -206,12 +232,13 @@ $(document).ready(function() {
             // new(): Deploy a new version of this contract to the network, getting an instance of MyContract that represents the newly deployed instance.
 
             let contract = web3.eth.contract(documentRegistryContractABI).at(documentRegistryContractAddress);
-            contract.registerTenderSubmission(webZipFileDetails, documentHash, tender_num, supplier_id, submission_date.toString(),
+            contract.registerTenderSubmission(webZipFileDetails, documentHash, tender_num, supplier_details, submission_date.toString(),
                 function(err, result) {
             if (err){
                 var message_type = CONSTANTS.ERROR; //error or success
                 var message_description = "Tender Submission Registry smart contract call failed: " + err;
 
+                //trigger notification
                 triggerNotificationOpen(CONSTANTS.NOTIFICATION_BAR_DIV, '"divUploadTenderZIPAlert"', message_description, message_type);
                 return console.log("Smart contract call failed: " + err);
             }
@@ -219,6 +246,11 @@ $(document).ready(function() {
             var message_type = CONSTANTS.SUCCESS; //error or success
             var message_description = `Tender Documents ZIP file with hash ${documentHash} <b>successfully added</b> to the Tender Submission Registry (Blockchain).`;
 
+            //reset upload form
+            $(CONSTANTS.UPLOAD_TENDER_DOCS_FORM).get(0).reset();
+            $(CONSTANTS.UPLOAD_TENDER_DOCS_LABEL_FILE_ZIP).html(CONSTANTS.CHOOSE_A_FILE_LABEL);
+
+            //trigger notification
             triggerNotificationOpen(CONSTANTS.NOTIFICATION_BAR_DIV, '"divUploadTenderZIPAlert"', message_description, message_type);
             console.log(message_description);
             });
@@ -226,6 +258,7 @@ $(document).ready(function() {
         fileReader.readAsBinaryString($(CONSTANTS.UPLOAD_TENDER_DOCS_INPUT_FILE_ZIP)[0].files[0]);
     }
 
+     // function to verify Tender ZIP file
     function verifyTenderZIP() {
         $(CONSTANTS.NOTIFICATION_BAR_ROW).hide();
 
@@ -234,6 +267,7 @@ $(document).ready(function() {
             var message_type = CONSTANTS.ERROR; //error or success
             var message_description = "Please select a Tender Documents ZIP file to verify.";
 
+            //trigger notification
             triggerNotificationOpen(CONSTANTS.NOTIFICATION_BAR_DIV, '"divVerifyTenderZIPAlert"', message_description, message_type);
             return console.log(message_description);
         }
@@ -242,6 +276,7 @@ $(document).ready(function() {
             var message_type = CONSTANTS.ERROR; //error or success
             var message_description = "Please confirm that you agree with the Terms and Conditions.";
 
+            //trigger notification
             triggerNotificationOpen(CONSTANTS.NOTIFICATION_BAR_DIV, '"divUploadTenderZIPAlert"', message_description, message_type);
             return console.log(message_description);
         }
@@ -262,6 +297,7 @@ $(document).ready(function() {
                 var message_type = CONSTANTS.ERROR; //error or success
                 var message_description = "Please install MetaMask to access the Ethereum Web3 injected API from your Web browser.";
 
+                //trigger notification
                 triggerNotificationOpen(CONSTANTS.NOTIFICATION_BAR_DIV, '"divVerifyTenderZIPAlert"', message_description, message_type);
                 return console.log(message_description);
             }
@@ -275,6 +311,7 @@ $(document).ready(function() {
                     var message_type = CONSTANTS.ERROR; //error or success
                     var message_description = "Tender Submission Registry smart contract call failed: " + err;
 
+                    //trigger notification
                     triggerNotificationOpen(CONSTANTS.NOTIFICATION_BAR_DIV, '"divVerifyTenderZIPAlert"', message_description, message_type);
                     return console.log(message_description);
                 }
@@ -318,6 +355,11 @@ $(document).ready(function() {
                     var message_type = CONSTANTS.SUCCESS; //error or success
                     var message_description =`Tender Documents ZIP file with hash ${documentHash} is <b>valid</b>. Uploaded to Tender Submission Registry (Blockchain) on: ${contractSubmissionDate}.`;
 
+                    //reset verify form
+                    $(CONSTANTS.UPLOAD_TENDER_DOCS_FORM).get(0).reset();
+                    $(CONSTANTS.UPLOAD_TENDER_DOCS_LABEL_FILE_ZIP).html(CONSTANTS.CHOOSE_A_FILE_LABEL);
+
+                    //trigger notification
                     triggerNotificationOpen(CONSTANTS.NOTIFICATION_BAR_DIV, '"divVerifyTenderZIPAlert"', message_description, message_type);
                     return console.log(message_description);
                 }
@@ -325,6 +367,7 @@ $(document).ready(function() {
                     var message_type = CONSTANTS.ERROR; //error or success
                     var message_description =`Tender Documents ZIP file with hash ${documentHash} is <b>invalid</b>: not found in the Tender Submission Registry (Blockchain).`;
 
+                    //trigger notification
                     triggerNotificationOpen(CONSTANTS.NOTIFICATION_BAR_DIV, '"divVerifyTenderZIPAlert"', message_description, message_type);
                     return console.log(message_description);
             });
@@ -332,6 +375,7 @@ $(document).ready(function() {
         fileReader.readAsBinaryString($(CONSTANTS.VERIFY_TENDER_DOCS_INPUT_FILE_ZIP)[0].files[0]);
     }
 
+    // function to get count of Tender ZIP files that have been previously uploaded
     function getTenderDocsCount() {
         if (typeof web3 === 'undefined'){
                 var message_type = CONSTANTS.ERROR; //error or success
