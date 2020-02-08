@@ -152,6 +152,11 @@ $(document).ready(function() {
             }
 
             //reset file upload field label
+            if (formName === CONSTANTS.RETRIEVE_TENDER_DOCS_ADDRESS_FORM){
+                $(CONSTANTS.RETRIEVE_TENDER_DOCS_ADDRESS_LABEL_FILE_ZIP).html(CONSTANTS.CHOOSE_A_FILE_LABEL);
+            }
+
+            //reset file upload field label
             if (formName === CONSTANTS.UPLOAD_TENDER_DOCS_FORM){
                 $(CONSTANTS.UPLOAD_TENDER_DOCS_LABEL_FILE_ZIP).html(CONSTANTS.CHOOSE_A_FILE_LABEL);
             }
