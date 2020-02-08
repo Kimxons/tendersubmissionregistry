@@ -2,8 +2,11 @@ pragma solidity ^0.5.0; //solidity version
 
 ///@title Tender Submission Registry
 
+//OpenZeppelin Contract modules for simple authorization and access control mechanisms.
+import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
+
 //Smart contract
-contract TenderRegistry {
+contract TenderRegistry is Ownable {
 
     /*
         This is a type for a single Tender Submission.
@@ -46,7 +49,9 @@ contract TenderRegistry {
 //                                 "02-02-2020 19:00:00", "02-02-2020 19:00:00", 1);
 //    }
 
-    // Events that will be fired on changes.
+    /**
+     * @dev Fired on submission of a Tender ZIP File.
+     */
     event registeredTenderEvent (
         uint indexed _tenderSubmissionId
     );
@@ -85,13 +90,20 @@ contract TenderRegistry {
         returning values from
     */
     
+    /**
+     * @dev Register a Tender submission - it should add the Tender submission to the array of Tender submission.
+     * @param ZIPFileDetails Name and size of ZIP File.
+     * @param ZIPFileHash sha256 hash of ZIP File.
+     * @param TenderSummary Tender number and title.
+     * @param SupplierDetails Submitter Name, Surname, Identity Number and Supplier ID.
+     * @param SubmissionDate Date of submission.
+     */
     function registerTenderSubmission ( string memory ZIPFileDetails, string memory ZIPFileHash,
                                         string memory TenderSummary, string memory SupplierDetails,
                                         string memory SubmissionDate)
                                         public returns(uint) {
         /*
-            A function to register a Tender submission - it should add the Tender submission to the array of
-            Tender submission. Public functions need to write all of the arguments to memory because public functions
+            Recall that Public functions need to write all of the arguments to memory because public functions
             may be called internally, which is an entirely different process from external calls. Thus, when the
             compiler generates the code for an internal function, that function expects its arguments to be located in memory.
         */
@@ -117,26 +129,29 @@ contract TenderRegistry {
         return id;
     }
 
-
-    function getTenderSubmissionsCount() external view returns(uint) {
-        /*
-            a function to get the number of TenderSubmissions tracked on Blockchain i.e. length of tenderHashes array
-        */
-       return tenderHashes.length;
+    /**
+     * @dev Returns the number of TenderSubmissions tracked on Blockchain.
+     * Can only be called by the current owner.
+     */
+    function getTenderSubmissionsCount() external view returns(uint) onlyOwner {
+        return tenderHashes.length;
     }
 
+    /**
+     * @dev Returns a ZIPFileHash from tenderHash array using array index.
+     * @param arrayIndex Array index of ZIP File Hash
+     */
     function getZipFileHashByIndex(uint256 arrayIndex) external view returns(string memory) {
-        /*
-            a function to get a ZIPFileHash from tenderHash array using array index
-        */
        return tenderHashes[arrayIndex];
     }
 
-
+    /**
+     * @dev Returns the tender submission details if the hash exists in the map.
+     * @param hash ZIP File Hash which is key in the tenderhash map.
+     */
     function getTenderSubmission(string calldata hash) external view returns (string memory, string memory, string memory,
                                                                      string memory, string memory, uint256, uint) {
         /*
-            A function to return the tender submission details if the hash exists in the map.
             Recall that a struct in solidity is simply a loose bag of variables so the return value cannot be a struct
             but rather the individual variables.
         */
@@ -146,11 +161,11 @@ contract TenderRegistry {
                tendersMap[hash].BlockTime, tendersMap[hash].IsSet);
     }
 
+    /**
+     * @dev Confirm whether the hash exists in the submissions.
+     * @param hash ZIP File Hash which iskey in the tenderhash map
+     */
     function checkTenderSubmission(string memory hash) public view returns (bool) {
-        /*
-            A function to confirm whether the hash exists in the submissions.
-        */
-
         // check whether the hash is among the list of known hashes
         uint onChainIsSet = tendersMap[hash].IsSet;
         if (onChainIsSet > 0) {
@@ -161,13 +176,20 @@ contract TenderRegistry {
         return false;
     }
 
+    /**
+     * @dev This i a fallback function which gets executed if a transaction with invalid data is sent to the contract or
+     *   just ether without data. We revert the send so that no-one accidentally loses money when using the contract.
+     */
     function() external {
-        /*
-            This i a fallback function which gets executed if a transaction with invalid data is sent to the contract or
-            just ether without data. We revert the send so that no-one
-            accidentally loses money when using the contract.
-        */
-    revert();
+        revert();
+    }
+
+    /**
+     * @dev Remove the storage and code from the state.
+     * Can only be called by the current owner.
+     */
+    function destroy() public onlyOwner {
+      selfdestruct(owner);
     }
 
 }
