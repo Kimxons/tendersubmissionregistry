@@ -10,6 +10,7 @@ $(document).ready(function() {
                   HOME_TENDER_DOCS_MENU_BUTTON : "#homeTenderDocsMenuButton",
                   UPLOAD_TENDER_DOCS_MENU_BUTTON : "#uploadTenderDocsMenuButton",
                   VERIFY_TENDER_DOCS_MENU_BUTTON : "#verifyTenderDocsMenuButton",
+                  RETRIEVE_TENDER_DOCS_ADDRESS_MENU_BUTTON : "#retrieveTenderDocsAddressMenuButton",
                   GET_TENDER_DOCS_COUNT_MENU_BUTTON : "#getTenderDocsCountMenuButton",
                   LOADING : "#loadingRow",
                   NOTIFICATION_BAR_ROW: "#notificationBarRow",
@@ -18,6 +19,8 @@ $(document).ready(function() {
                   UPLOAD_TENDER_DOCS_FORM: "#uploadTenderDocsForm",
                   VERIFY_TENDER_DOCS: "#verifyTenderDocsRow",
                   VERIFY_TENDER_DOCS_FORM: "#verifyTenderDocsForm",
+                  RETRIEVE_TENDER_DOCS_ADDRESS: "#retrieveTenderDocsAddressRow",
+                  RETRIEVE_TENDER_DOCS_ADDRESS_FORM: "#retrieveTenderDocsAddressForm",
                   UPLOAD_TENDER_DOCS_INPUT_CHECKBOX_AUTH: "#uploadTenderDocsInputCheckboxAuthorised",
                   UPLOAD_TENDER_DOCS_INPUT_CHECKBOX_TERMS: "#uploadTenderDocsInputCheckboxTerms",
                   UPLOAD_TENDER_DOCS_INPUT_FILE_ZIP: "#uploadTenderDocsInputFileZIP",
@@ -25,12 +28,16 @@ $(document).ready(function() {
                   VERIFY_TENDER_DOCS_INPUT_CHECKBOX_TERMS: "#verifyTenderDocsInputCheckboxTerms",
                   VERIFY_TENDER_DOCS_INPUT_FILE_ZIP: "#verifyTenderDocsInputFileZIP",
                   VERIFY_TENDER_DOCS_LABEL_FILE_ZIP: "#verifyTenderDocsLabelFileZIP",
+                  RETRIEVE_TENDER_DOCS_ADDRESS_INPUT_CHECKBOX_TERMS: "#retrieveTenderDocsAddressInputCheckboxTerms",
+                  RETRIEVE_TENDER_DOCS_ADDRESS_INPUT_FILE_ZIP: "#retrieveTenderDocsAddressInputFileZIP",
+                  RETRIEVE_TENDER_DOCS_ADDRESS_LABEL_FILE_ZIP: "#retrieveTenderDocsAddressLabelFileZIP",
                   UPLOAD_TENDER_DOCS_TENDER_NUM_SELECTED: "#uploadTenderDocsSelectTenderNum  :selected",
                   UPLOAD_TENDER_DOCS_TENDER_SUBMITTED_BY: "#uploadTenderDocsInputTextSubmittedBy",
                   UPLOAD_TENDER_DOCS_TENDER_SUBMITTED_BY_ID: "#uploadTenderDocsInputTextIDNum",
                   UPLOAD_TENDER_DOCS_TENDER_SUPPLIER_ID: "#uploadTenderDocsInputTextSupplierID",
                   UPLOAD_TENDER_DOCS_BUTTON_SUBMIT: "#uploadTenderDocsButtonSubmit",
                   VERIFY_TENDER_DOCS_BUTTON_SUBMIT: "#verifyTenderDocsButtonSubmit",
+                  RETRIEVE_TENDER_DOCS_ADDRESS_BUTTON_SUBMIT: "#retrieveTenderDocsAddressButtonSubmit",
                   NOTIFICATION_BAR_DIV: "#divNotificationBar",
                   GET_TENDER_DOCS_COUNT_ROW: "#getTenderDocsCountRow",
                   TENDER_DOCS_COUNT_BUTTON: "#tenderDocsCountButton",
@@ -55,6 +62,10 @@ $(document).ready(function() {
     $(CONSTANTS.VERIFY_TENDER_DOCS_MENU_BUTTON).click(function() { displayRow(CONSTANTS.VERIFY_TENDER_DOCS,
                                                                               CONSTANTS.VERIFY_TENDER_DOCS_FORM) });
 
+    // display the retrieve tender docs form  after menu button click
+    $(CONSTANTS.RETRIEVE_TENDER_DOCS_ADDRESS_MENU_BUTTON).click(function() { displayRow(CONSTANTS.RETRIEVE_TENDER_DOCS_ADDRESS,
+                                                                              CONSTANTS.RETRIEVE_TENDER_DOCS_ADDRESS_FORM) });
+
     // display the tender docs count button after menu button click
     $(CONSTANTS.GET_TENDER_DOCS_COUNT_MENU_BUTTON).click(function() { displayRow(CONSTANTS.GET_TENDER_DOCS_COUNT_ROW,
                                                                               CONSTANTS.EMPTY_STRING) });
@@ -63,6 +74,9 @@ $(document).ready(function() {
 
     // call verifyTenderZIP function on button click
     $(CONSTANTS.VERIFY_TENDER_DOCS_BUTTON_SUBMIT).click(verifyTenderZIP);
+
+    // call retrieveTenderZIPAddress function on button click
+    $(CONSTANTS.RETRIEVE_TENDER_DOCS_ADDRESS_BUTTON_SUBMIT).click(retrieveTenderZIPAddress);
 
     displayRow(CONSTANTS.HOW_IT_WORKS, CONSTANTS.EMPTY_STRING);
 
@@ -78,6 +92,14 @@ $(document).ready(function() {
         var fileName = $(this).val();
         //replace the "Choose a file" label
         $(this).next(CONSTANTS.VERIFY_TENDER_DOCS_LABEL_FILE_ZIP).html(fileName);
+    });
+
+    // update file input label to selected file
+    $(CONSTANTS.RETRIEVE_TENDER_DOCS_ADDRESS_INPUT_FILE_ZIP).on('change',function(){
+        //get the file name
+        var fileName = $(this).val();
+        //replace the "Choose a file" label
+        $(this).next(CONSTANTS.RETRIEVE_TENDER_DOCS_ADDRESS_LABEL_FILE_ZIP).html(fileName);
     });
 
     // update file input label to selected file
@@ -115,6 +137,7 @@ $(document).ready(function() {
         $(CONSTANTS.HOW_IT_WORKS).hide();
         $(CONSTANTS.UPLOAD_TENDER_DOCS).hide();
         $(CONSTANTS.VERIFY_TENDER_DOCS).hide();
+        $(CONSTANTS.RETRIEVE_TENDER_DOCS_ADDRESS).hide();
         $(CONSTANTS.GET_TENDER_DOCS_COUNT_ROW).hide();
         $(CONSTANTS.NOTIFICATION_BAR_ROW).hide();
 
@@ -271,7 +294,7 @@ $(document).ready(function() {
             });
         };
         fileReader.readAsBinaryString($(CONSTANTS.UPLOAD_TENDER_DOCS_INPUT_FILE_ZIP)[0].files[0]);
-    }
+    };
 
      // function to verify Tender ZIP file
     function verifyTenderZIP() {
@@ -383,7 +406,93 @@ $(document).ready(function() {
             });
         };
         fileReader.readAsBinaryString($(CONSTANTS.VERIFY_TENDER_DOCS_INPUT_FILE_ZIP)[0].files[0]);
-    }
+    };
+
+    // function to retrieve a submitted Tender ZIP file's submitter address
+    function retrieveTenderZIPAddress() {
+        $(CONSTANTS.NOTIFICATION_BAR_ROW).hide();
+
+        if ($(CONSTANTS.RETRIEVE_TENDER_DOCS_ADDRESS_INPUT_FILE_ZIP)[0].files.length == 0){
+            var message_type = CONSTANTS.ERROR; //error or success
+            var message_description = "Please select a Tender Documents ZIP file to retrieve submitter address.";
+
+            //trigger notification
+            triggerNotificationOpen(CONSTANTS.NOTIFICATION_BAR_DIV, '"divVerifyTenderZIPAlert"', message_description, message_type);
+            return console.log(message_description);
+        }
+
+         if ($(CONSTANTS.RETRIEVE_TENDER_DOCS_ADDRESS_INPUT_CHECKBOX_TERMS)[0].checked === false){
+            var message_type = CONSTANTS.ERROR; //error or success
+            var message_description = "Please confirm that you agree with the Terms and Conditions.";
+
+            //trigger notification
+            triggerNotificationOpen(CONSTANTS.NOTIFICATION_BAR_DIV, '"divUploadTenderZIPAlert"', message_description, message_type);
+            return console.log(message_description);
+        }
+
+        let fileReader = new FileReader();
+        let zip_filename = $(CONSTANTS.RETRIEVE_TENDER_DOCS_ADDRESS_INPUT_FILE_ZIP)[0].files[0].name;
+        let zip_filesize = ($(CONSTANTS.RETRIEVE_TENDER_DOCS_ADDRESS_INPUT_FILE_ZIP)[0].files[0].size)/CONSTANTS.MEGA;
+        let webZipFileDetails = "ZIP File  " + zip_filename + " (size " + zip_filesize + "MB)";
+
+        fileReader.onload = function() {
+            let documentHash = sha256(fileReader.result); //fileReader.result is base64 encoded source of the file
+            if (typeof web3 === 'undefined'){
+                var message_type = CONSTANTS.ERROR; //error or success
+                var message_description = "Please install MetaMask to access the Ethereum Web3 injected API from your Web browser.";
+
+                //trigger notification
+                triggerNotificationOpen(CONSTANTS.NOTIFICATION_BAR_DIV, '"divVerifyTenderZIPAlert"', message_description, message_type);
+                return console.log(message_description);
+            }
+
+            console.log(webZipFileDetails + " successfully hashed (hash value "+ documentHash + ").");
+
+            let contract = web3.eth.contract(documentRegistryContractABI).at(documentRegistryContractAddress);
+            contract.getTenderSubmitterAddress(documentHash, function(err, result) {
+                if (err){
+                    var message_type = CONSTANTS.ERROR; //error or success
+                    var error_message = err.data.message;
+                    var message_description = "Tender Submission Registry smart contract call failed: " + err;
+                    if (error_message !== 'undefined'){
+                        message_description = "Tender Submission Registry smart contract call failed: " + err.data.message;
+                    }
+
+                    //trigger notification
+                    triggerNotificationOpen(CONSTANTS.NOTIFICATION_BAR_DIV, '"divVerifyTenderZIPAlert"', message_description, message_type);
+                    return console.log(message_description);
+                }
+
+                //result:
+                // tenderSubmissionAddress 0x874950B8c006e6D166f015236623fCD0C0a7DC75,
+
+                // Output from the contract function call
+                console.log("result: " + result);
+
+                if (result === '0x0000000000000000000000000000000000000000'){
+                    var message_type = CONSTANTS.ERROR; //error or success
+                    var message_description =`Tender Documents ${webZipFileDetails} with hash ${documentHash} is <b>invalid</b>: no corresponding submitter address found in the Tender Submission Registry (Blockchain).`;
+
+                    // trigger notification
+                    triggerNotificationOpen(CONSTANTS.NOTIFICATION_BAR_DIV, '"divVerifyTenderZIPAlert"', message_description, message_type);
+                    return console.log(message_description);
+                }
+                else {
+                    var message_type = CONSTANTS.SUCCESS; //error or success
+                    var message_description =`Tender Documents ${webZipFileDetails} with hash ${documentHash} is <b>valid</b>. Uploaded to Tender Submission Registry (Blockchain) by address : ${result}.`;
+
+                    // reset verify form
+                    $(CONSTANTS.RETRIEVE_TENDER_DOCS_ADDRESS_FORM).get(0).reset();
+                    $(CONSTANTS.RETRIEVE_TENDER_DOCS_ADDRESS_LABEL_FILE_ZIP).html(CONSTANTS.CHOOSE_A_FILE_LABEL);
+
+                    // trigger notification
+                    triggerNotificationOpen(CONSTANTS.NOTIFICATION_BAR_DIV, '"divVerifyTenderZIPAlert"', message_description, message_type);
+                    return console.log(message_description);
+                }
+            });
+        };
+        fileReader.readAsBinaryString($(CONSTANTS.RETRIEVE_TENDER_DOCS_ADDRESS_INPUT_FILE_ZIP)[0].files[0]);
+    };
 
     // function to get count of Tender ZIP files that have been previously uploaded
     function getTenderDocsCount() {

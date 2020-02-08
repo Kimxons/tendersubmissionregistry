@@ -128,6 +128,25 @@
               </form>
             </div>
           </div>
+          <div class="row align-items-center justify-content-center" id="retrieveTenderDocsAddressRow">
+            <div class="col-md-8 order-md-1">
+              <h4>
+                <p class="text-muted text-center">RETRIEVE TENDER DOCUMENTS SUBMITTER ADDRESS</p>
+              </h4>
+              <small class="text-muted">10MB Size Limit for ZIP file</small>
+              <form class="card p-2" id="retrieveTenderDocsAddressForm">
+                <div class="custom-file mb-3">
+                  <input type="file" accept=".zip,application/zip" class="custom-file-input" data-text="Upload ZIP file of tender documents" data-dragdrop="true" id="retrieveTenderDocsAddressInputFileZIP" data-buttonBefore="true" required>
+                  <label class="custom-file-label" for="retrieveTenderDocsAddressInputFileZIP" id="retrieveTenderDocsAddressLabelFileZIP">Upload ZIP file of tender documents</label>
+                </div>
+                <div class="custom-control custom-checkbox my-1 mr-sm-2">
+                  <input type="checkbox" class="custom-control-input" id="retrieveTenderDocsAddressInputCheckboxTerms" required>
+                  <label class="custom-control-label" for="retrieveTenderDocsAddressInputCheckboxTerms">I agree to the <a href="/docs/terms.pdf" target="_blank">Terms and Conditions</a>.</label>
+                </div>
+                <button type="submit" class="btn btn-primary my-1" id="retrieveTenderDocsAddressButtonSubmit">Retrieve Tender Documents Submitter Address</button>
+              </form>
+            </div>
+          </div>
           <div class="row align-items-center justify-content-center" id="getTenderDocsCountRow">
             <div class="col-md-8 order-md-1">
               <h4>
