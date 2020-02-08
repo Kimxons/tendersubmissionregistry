@@ -5,6 +5,7 @@ import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 
 /** @title Tender Submission Registry. */
 contract TenderRegistry is Ownable {
+    address payable contractOwner;
 
     /*
         This is a type for a single Tender Submission.
@@ -35,8 +36,11 @@ contract TenderRegistry is Ownable {
     */
     string[] public tenderHashes;
 
-//    constructor () public {
-//        address contractOwner = msg.sender;
+    /**
+     * @dev Constructor.
+     */
+    constructor () public {
+          contractOwner = msg.sender;
 //        registerTenderSubmission("{ZIPFIleName: test.zip", ZIPFileSize:"0.433993MB"},
 //                                  f149d75e984f1e919c4b896a0701637ff0260b834e1c18f3a9776c12fbf82311,
 //                                  {SubmitterFullName:"SubmitterFullName",
@@ -44,7 +48,7 @@ contract TenderRegistry is Ownable {
 //                                   SupplierID:SupplierID},
 //                                 "1001 - Fix and Supply Data Center Hardware",
 //                                 "02-02-2020 19:00:00", "02-02-2020 19:00:00", 1);
-//    }
+    }
 
     /**
      * @dev Fired on submission of a Tender ZIP File.
@@ -130,7 +134,7 @@ contract TenderRegistry is Ownable {
      * @dev Returns the number of TenderSubmissions tracked on Blockchain.
      * Can only be called by the current owner.
      */
-    function getTenderSubmissionsCount() external view returns(uint) onlyOwner {
+    function getTenderSubmissionsCount() external onlyOwner view returns(uint) {
         return tenderHashes.length;
     }
 
@@ -174,7 +178,7 @@ contract TenderRegistry is Ownable {
     }
 
     /**
-     * @dev This i a fallback function which gets executed if a transaction with invalid data is sent to the contract or
+     * @dev This is a fallback function which gets executed if a transaction with invalid data is sent to the contract or
      *   just ether without data. We revert the send so that no-one accidentally loses money when using the contract.
      */
     function() external {
@@ -186,7 +190,8 @@ contract TenderRegistry is Ownable {
      * Can only be called by the current owner.
      */
     function destroy() public onlyOwner {
-      selfdestruct(owner);
+        // cast owner which is address to address payable
+        //contractOwner = address(uint160(owner));
+        selfdestruct(contractOwner);
     }
-
 }
