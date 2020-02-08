@@ -10,6 +10,7 @@
 //     Test 7: retrieving Tender Submission address for an existing submission using the ZIP File Hash works - testing core functionality of TSR (tracking submissions and corresponding address).
 //     Test 8: retrieving Tender Submission address for an non-existent submission using a Fake ZIP File Hash should not work - testing core functionality of TSR.
 //     Test 9: retrieving Tender Submission details for an non-existent submission using a Fake ZIP File Hash should not work - testing core functionality of TSR.
+//     Test 10: adding a Duplicate Tender Submission (i.e. Duplicate File ZIP Hash) should not work.
 
 const TenderRegistry = artifacts.require('TenderRegistry');
 
@@ -152,6 +153,22 @@ contract('TenderRegistry', function (accounts) {
 
     //we expect the IsSet variable to be undefined for a fake Hash
     assert(tenderSubmissionInstance[7] === undefined, 'FakeZIPFileHash returned a Tender Submission which is not expected behaviour');
+  });
+
+    // Test 10: adding a Duplicate Tender Submission (i.e. Duplicate File ZIP Hash) should not work
+  it('should not add a Duplicate File ZIP to the registry', async function () {
+    let err = null;
+
+    try {
+      // Attempt to register a Tender Submission to the registry using a duplicate ZIPFileHash
+      let tenderSubmissionIndex = await TenderRegistryInstance.registerTenderSubmission(ZIPFileDetails, ZIPFileHash, TenderSummary, SupplierDetails, SubmissionDate);
+    } catch (error) {
+      err = error
+    }
+
+    console.log(err);
+
+    assert.ok(err instanceof Error, 'Event registeredTenderEvent was emitted which is not expected as you should not be able to register duplicate ZIPFileHashes');
   });
 
 
