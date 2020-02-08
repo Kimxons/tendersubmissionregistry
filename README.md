@@ -20,7 +20,10 @@ TSR has 3 main use cases:
     - At the time of vetting/reviewing tender applications and corresponding document packs (ZIP files), TSR can be used to confirm that the ZIP files that the tender issuing company has on record have not been tampered with post online submission
 
 ## Documentation
-- N/A
+Additional documentation in the following files:
+- avoiding_common_attacks.md
+- deployed_addresses.md
+- design_pattern_decisions.md
 
 ## Installation (Development Environment)
 In order to run TSR, an environment with the following is required:
