@@ -8,7 +8,7 @@ contract TenderRegistry is Ownable {
     address payable contractOwner;
 
     /*
-        This is a type for a single Tender Submission.
+        This is a struct for a single Tender Submission.
         A struct in solidity is simply a loose bag of variables.
     */
     struct TenderSubmission {
@@ -29,6 +29,11 @@ contract TenderRegistry is Ownable {
         Recall that a mapping is essentially a key-value store for storing and looking up data, it allows random access in a single step.
     */
     mapping(string => TenderSubmission) public tendersMap;
+
+   /*
+       This declares a state variable that stores an address corresponding to each submission.
+   */
+    mapping(string => address) public tendersAddressMap;
 
     /*
         A dynamically-sized string array containing tender hashes.
@@ -109,14 +114,17 @@ contract TenderRegistry is Ownable {
             compiler generates the code for an internal function, that function expects its arguments to be located in memory.
         */
 
-        //require (msg.sender == contractOwner);
+        require(this.checkTenderSubmission(ZIPFileHash) == false, "Error: Cannot upload a previously submitted ZIP File.");
 
         uint256 SubmissionBlocktime = block.timestamp;
         uint256 IsSet = 1;
 
-        // Creates new TenderSubmission struct and save in storage.
+        // Creates mapping between a FileHash and TenderSubmission struct and save in storage.
         tendersMap[ZIPFileHash] = TenderSubmission(ZIPFileDetails, ZIPFileHash, TenderSummary,
                                                    SupplierDetails, SubmissionDate, SubmissionBlocktime, IsSet);
+
+         // Creates mapping between a FileHash and tender submitter address then save in storage.
+        tendersAddressMap[ZIPFileHash] = msg.sender;
 
         //add the Tenderhash to the array for length tracking
         uint id = tenderHashes.push(ZIPFileHash) - 1;
@@ -136,6 +144,15 @@ contract TenderRegistry is Ownable {
      */
     function getTenderSubmissionsCount() external onlyOwner view returns(uint) {
         return tenderHashes.length;
+    }
+
+    /**
+     * @dev Returns an address used for a submission.
+     * @param hash ZIP File Hash which is key in the tenderhash map.
+     * Can only be called by the current owner.
+     */
+    function getTenderSubmitterAddress(string calldata hash) external onlyOwner view returns(address) {
+       return tendersAddressMap[hash];
     }
 
     /**
