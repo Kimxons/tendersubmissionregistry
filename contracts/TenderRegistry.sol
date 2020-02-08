@@ -1,11 +1,9 @@
 pragma solidity ^0.5.0; //solidity version
 
-///@title Tender Submission Registry
-
 //OpenZeppelin Contract modules for simple authorization and access control mechanisms.
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 
-//Smart contract
+/** @title Tender Submission Registry. */
 contract TenderRegistry is Ownable {
 
     /*
@@ -27,8 +25,7 @@ contract TenderRegistry is Ownable {
         The key is a string i.e. ZIP file hash and the value is a TenderSubmission struct.
         The compiler to automatically generate a getter which allows us to do something like
         TenderSubmissionDetails = tendersMap(f149d75e984f1e919c4b896a0701637ff0260b834e1c18f3a9776c12fbf82311).
-        A mapping is essentially a key-value store for storing and looking up data.
-        Mappings allow random access in a single step.
+        Recall that a mapping is essentially a key-value store for storing and looking up data, it allows random access in a single step.
     */
     mapping(string => TenderSubmission) public tendersMap;
 
