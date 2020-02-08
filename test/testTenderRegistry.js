@@ -1,13 +1,14 @@
-const TenderRegistry = artifacts.require('TenderRegistry');
 
-// We want to test the following aspects of the TenderSubmissionRegistry:
+// We want to test the following aspects of the Tender Submission Registry (TSR):
 //
-//     Test 1: there are zero submissions at the beginning
-//     Test 2: adding a Tender Submission works
-//     Test 3: tender hash string array is updated after successful adding of a Tender Submission
-//     Test 4: latest Tender Submission Hash can be retrieved from the tender hash string array
-//     Test 5: retrieving Tender Submission details for an existing submission using the ZIP File Hash works
-//     Test 6: retrieving Tender Submission details for an non-existent submission using a Fake ZIP File Hash does not work
+//     Test 1: There are zero submissions at the beginning - this ensures that the developers have not embedded fraudulent entries in the code.
+//     Test 2: Adding a Tender Submission works - testing core functionality of TSR.
+//     Test 3: Tender hash string array is updated after successful adding of a Tender Submission - Useful for tracking submissions.
+//     Test 4: Latest Tender Submission Hash can be retrieved from the tender hash string array - Confirm that tracking mechanisms are working as expected.
+//     Test 5: Retrieving Tender Submission details for an existing submission using the ZIP File Hash works - testing core functionality of TSR.
+//     Test 6: retrieving Tender Submission details for an non-existent submission using a Fake ZIP File Hash does not work - testing core functionality of TSR.
+
+const TenderRegistry = artifacts.require('TenderRegistry');
 
 contract('TenderRegistry', function (accounts) {
   // predefine parameters
