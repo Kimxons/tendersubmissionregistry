@@ -247,11 +247,15 @@ $(document).ready(function() {
                 function(err, result) {
             if (err){
                 var message_type = CONSTANTS.ERROR; //error or success
+                var error_message = err.data.message;
                 var message_description = "Tender Submission Registry smart contract call failed: " + err;
+                if (error_message !== 'undefined'){
+                    message_description = "Tender Submission Registry smart contract call failed: " + err.data.message;
+                }
 
                 //trigger notification
                 triggerNotificationOpen(CONSTANTS.NOTIFICATION_BAR_DIV, '"divUploadTenderZIPAlert"', message_description, message_type);
-                return console.log("Smart contract call failed: " + err);
+                return console.log(message_description);
             }
 
             var message_type = CONSTANTS.SUCCESS; //error or success
@@ -319,7 +323,11 @@ $(document).ready(function() {
             contract.getTenderSubmission(documentHash, function(err, result) {
                 if (err){
                     var message_type = CONSTANTS.ERROR; //error or success
+                    var error_message = err.data.message;
                     var message_description = "Tender Submission Registry smart contract call failed: " + err;
+                    if (error_message !== 'undefined'){
+                        message_description = "Tender Submission Registry smart contract call failed: " + err.data.message;
+                    }
 
                     //trigger notification
                     triggerNotificationOpen(CONSTANTS.NOTIFICATION_BAR_DIV, '"divVerifyTenderZIPAlert"', message_description, message_type);
@@ -392,7 +400,11 @@ $(document).ready(function() {
             contract.getTenderSubmissionsCount(function(err, result) {
                 if (err){
                     var message_type = CONSTANTS.ERROR; //error or success
+                    var error_message = err.data.message;
                     var message_description = "Tender Submission Registry smart contract call failed: " + err;
+                    if (error_message !== 'undefined'){
+                        message_description = "Tender Submission Registry smart contract call failed: " + err.data.message;
+                    }
 
                     // trigger notification
                     triggerNotificationOpen(CONSTANTS.NOTIFICATION_BAR_DIV, '"divVerifyTenderZIPAlert"', message_description, message_type);
