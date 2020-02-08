@@ -6,8 +6,10 @@
 //     Test 3: Adding a Tender Submission works - testing core functionality of TSR.
 //     Test 4: Tender hash string array is updated after successful adding of a Tender Submission - Useful for tracking submissions.
 //     Test 5: Latest Tender Submission Hash can be retrieved from the tender hash string array - Confirm that tracking mechanisms are working as expected.
-//     Test 6: Retrieving Tender Submission details for an existing submission using the ZIP File Hash works - testing core functionality of TSR.
-//     Test 7: retrieving Tender Submission details for an non-existent submission using a Fake ZIP File Hash does not work - testing core functionality of TSR.
+//     Test 6: Retrieving Tender Submission details for an existing submission using the ZIP File Hash works - testing core functionality of TSR (tracking submissions and corresponding details).
+//     Test 7: retrieving Tender Submission address for an existing submission using the ZIP File Hash works - testing core functionality of TSR (tracking submissions and corresponding address).
+//     Test 8: retrieving Tender Submission address for an non-existent submission using a Fake ZIP File Hash should not work - testing core functionality of TSR.
+//     Test 9: retrieving Tender Submission details for an non-existent submission using a Fake ZIP File Hash should not work - testing core functionality of TSR.
 
 const TenderRegistry = artifacts.require('TenderRegistry');
 
@@ -26,8 +28,11 @@ contract('TenderRegistry', function (accounts) {
   // predefine the contract instance
   let TenderRegistryInstance;
 
-  //predefine initial Tender Submission Counter which should be zero
+  // predefine initial Tender Submission Counter which should be zero
   let initialTenderSubmissionCounter;
+
+  // define owner for testing contract instance
+  let owner;
 
   // before running the tests, set the value of the initialTenderSubmissionCounter
   // before() The before function runs before the testing begins and it can be used to set the adequate variables to be used in each test.
@@ -38,24 +43,25 @@ contract('TenderRegistry', function (accounts) {
         // deploy a new Tender Registry contract
         TenderRegistryInstance = await TenderRegistry.new();
 
-          // get the initial number of Tender Submissions
+        // get the initial number of Tender Submissions
         initialTenderSubmissionCounter = await TenderRegistryInstance.getTenderSubmissionsCount();
+
+        // set owner
+        owner = await TenderRegistryInstance.owner();
+        console.log("owner " + owner);
     });
 
 
   //it() It includes single units of tests, focused on testing specific aspects in a contract.
 
   // Test 1: there are zero submissions at the beginning
-  it('ensure that owner is the first address', async  () => {
-      const owner = await TenderRegistryInstance.owner();
+  it('ensure that owner is the first address', async  function () {
       assert.equal(owner, accounts[0]);
-
   });
 
   // Test 2: there are zero submissions at the beginning
   it('should contain zero Tender Submissions in the beginning', async function () {
     // fetch instance of TenderRegistry contract
-    //let TenderRegistryInstance = await TenderRegistry.deployed()
     // get the number of Tender Submissions
     let tenderSubmissionCounter = await TenderRegistryInstance.getTenderSubmissionsCount()
     // check that there are no Tender Submissions initially
@@ -64,7 +70,6 @@ contract('TenderRegistry', function (accounts) {
 
   // Test 3: adding a Tender Submission works
   it('should add a Tender Submission to the registry', async function () {
-    //let TenderRegistryInstance = await TenderRegistry.deployed();
     // register a Tender Submission to the registry
     let tenderSubmissionIndex = await TenderRegistryInstance.registerTenderSubmission(ZIPFileDetails, ZIPFileHash, TenderSummary, SupplierDetails, SubmissionDate);
 
@@ -81,8 +86,7 @@ contract('TenderRegistry', function (accounts) {
 
   // Test 4: tender hash string array is updated after successful adding of a Tender Submission
   it('should increment Tender Submission hash array after adding to registry', async function () {
-    //let TenderRegistryInstance = await TenderRegistry.deployed();
-        // get the number of Tender Submissions
+    // get the number of Tender Submissions
     let tenderSubmissionCounter = await TenderRegistryInstance.getTenderSubmissionsCount();
 
     assert.equal(tenderSubmissionCounter.toNumber(), initialTenderSubmissionCounter + 1,
@@ -92,7 +96,6 @@ contract('TenderRegistry', function (accounts) {
   //Test 5: latest Tender Submission Hash can be retrieved from the tender hash string array
   it('should retrieve the Tender Hash', async function () {
     //retrieve from map using string array indexing
-    //let TenderRegistryInstance = await TenderRegistry.deployed();
     let tenderSubmissionCounter = await TenderRegistryInstance.getTenderSubmissionsCount();
     console.log("tenderSubmissionCounter " + tenderSubmissionCounter);
 
@@ -108,7 +111,6 @@ contract('TenderRegistry', function (accounts) {
 
   // Test 6: retrieving Tender Submission details for an existing submission using the ZIP File Hash works
   it('should verify a true Tender Submission from the registry', async function () {
-    //let TenderRegistryInstance = await TenderRegistry.deployed()
 
     // retrieve the Tender Submission details
     let tenderSubmissionInstance =await TenderRegistryInstance.getTenderSubmission(ZIPFileHash);
@@ -121,9 +123,30 @@ contract('TenderRegistry', function (accounts) {
     assert.equal(tenderSubmissionInstance[4], SubmissionDate, 'Tender Submission date does not match');
   });
 
-  // Test 7: retrieving Tender Submission details for an non-existent submission using a Fake ZIP File Hash does not work
+  // Test 7: retrieving submitter address from tendersAddressMap for an existing submission using the ZIP File Hash works
+  it('should return a submitter address for an existing Tender Submission from the registry', async function () {
+
+    // retrieve the Tender Submission details
+    let tenderSubmissionAddress =await TenderRegistryInstance.getTenderSubmitterAddress(ZIPFileHash);
+
+    // check that they match the original Tender Submission details
+    console.log("tenderSubmissionAddress " + tenderSubmissionAddress);
+    assert.equal(tenderSubmissionAddress, owner, 'ZIPFileHash does not correspond to Tender ZIP File Submitter address');
+  });
+
+    // Test 8: retrieving submitter address from tendersAddressMap for an non-existent submission using the ZIP File Hash works
+  it('should identify a False Tender Submission hash by the returned address from the tendersAddressMap', async function () {
+
+    // retrieve the Tender Submission details
+    let tenderSubmissionAddress =await TenderRegistryInstance.getTenderSubmitterAddress(FakeZIPFileHash);
+
+    // check that the returned address is a non-address i.e. 0x0000000000000000000000000000000000000000
+    console.log("tenderSubmissionAddress " + tenderSubmissionAddress);
+    assert(tenderSubmissionAddress === '0x0000000000000000000000000000000000000000', 'FakeZIPFileHash returned a Tender Submission address which is not expected behaviour');
+  });
+
+  // Test 9: retrieving Tender Submission details for an non-existent submission using a Fake ZIP File Hash does not work
   it('should identify a false Tender Submission from the registry', async function () {
-    //let TenderRegistryInstance = await TenderRegistry.deployed();
     // retrieve Tender Submission details using a Fake Zip File Hash
     let tenderSubmissionInstance =await TenderRegistryInstance.getTenderSubmission(FakeZIPFileHash);
 
