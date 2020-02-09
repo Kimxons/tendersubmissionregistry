@@ -1,6 +1,7 @@
 pragma solidity ^0.5.0; //solidity version
 
 //OpenZeppelin Contract modules for simple authorization and access control mechanisms.
+import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 
 /** @title Tender Submission Registry. */
@@ -40,6 +41,9 @@ contract TenderRegistry is Ownable {
         returning values from
     */
 
+    // Include the SafeMath library inside this contract
+    using SafeMath for uint;
+
     address payable contractOwner;
     bool private stopped; // for use in circuit breaker
 
@@ -53,7 +57,7 @@ contract TenderRegistry is Ownable {
         string TenderSummary; // Tender number and title
         string SupplierDetails; // Dict of SubmitterFullName, SubmitterIdentificationNumber, SupplierID
         string SubmissionDate; // date and time of tender submission package zip upload
-        uint256 BlockTime;  // block time of tender submission package zip upload
+        uint256 BlockNumber;  // block number of tender submission package zip upload
         uint IsSet; // integer indication of whether Tender Submission exists i.e. default is zero so if > 0 it exists
     }
 
@@ -137,18 +141,19 @@ contract TenderRegistry is Ownable {
 
         require(this.checkTenderSubmission(ZIPFileHash) == false, "Error: Cannot upload a previously submitted ZIP File.");
 
-        uint256 SubmissionBlocktime = block.timestamp;
+        uint256 SubmissionBlocknumber = block.number;
         uint256 IsSet = 1;
 
         // Creates mapping between a FileHash and TenderSubmission struct and save in storage.
         tendersMap[ZIPFileHash] = TenderSubmission(ZIPFileDetails, ZIPFileHash, TenderSummary,
-                                                   SupplierDetails, SubmissionDate, SubmissionBlocktime, IsSet);
+                                                   SupplierDetails, SubmissionDate, SubmissionBlocknumber, IsSet);
 
          // Creates mapping between a FileHash and tender submitter address then save in storage.
         tendersAddressMap[ZIPFileHash] = msg.sender;
 
         //add the Tenderhash to the array for length tracking
-        uint id = tenderHashes.push(ZIPFileHash) - 1;
+        uint id = tenderHashes.push(ZIPFileHash);
+        id = id.sub(1);
 
         //or in one line
         //tenderHashes.push(ZIPFileHash);
@@ -197,7 +202,7 @@ contract TenderRegistry is Ownable {
 
         return (tendersMap[hash].ZIPFileDetails, tendersMap[hash].ZIPFileHash, tendersMap[hash].TenderSummary,
                tendersMap[hash].SupplierDetails, tendersMap[hash].SubmissionDate,
-               tendersMap[hash].BlockTime, tendersMap[hash].IsSet);
+               tendersMap[hash].BlockNumber, tendersMap[hash].IsSet);
     }
 
     /**
