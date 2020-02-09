@@ -1,10 +1,10 @@
 $(document).ready(function() {
-    const documentRegistryContractAddress = '0x0De80a5FB435fB617247e93BAd48346F07Cf7e99';
+    const documentRegistryContractAddress = '0xa4d2402be3EFE16CdFBe34C486F2937f7EB88800';
 
     // The second is the Application Binary interface or the ABI of the contract code.
     // ABI is just a list of method signatures, return types, members etc of the contract in a defined JSON format.
     // This ABI is needed when you will call your contract from a real javascript client.
-    const documentRegistryContractABI = [     {       "constant": false,       "inputs": [],       "name": "renounceOwnership",       "outputs": [],       "payable": false,       "stateMutability": "nonpayable",       "type": "function"     },     {       "constant": true,       "inputs": [         {           "name": "",           "type": "string"         }       ],       "name": "tendersMap",       "outputs": [         {           "name": "ZIPFileDetails",           "type": "string"         },         {           "name": "ZIPFileHash",           "type": "string"         },         {           "name": "TenderSummary",           "type": "string"         },         {           "name": "SupplierDetails",           "type": "string"         },         {           "name": "SubmissionDate",           "type": "string"         },         {           "name": "BlockTime",           "type": "uint256"         },         {           "name": "IsSet",           "type": "uint256"         }       ],       "payable": false,       "stateMutability": "view",       "type": "function"     },     {       "constant": true,       "inputs": [],       "name": "owner",       "outputs": [         {           "name": "",           "type": "address"         }       ],       "payable": false,       "stateMutability": "view",       "type": "function"     },     {       "constant": true,       "inputs": [],       "name": "isOwner",       "outputs": [         {           "name": "",           "type": "bool"         }       ],       "payable": false,       "stateMutability": "view",       "type": "function"     },     {       "constant": true,       "inputs": [         {           "name": "",           "type": "uint256"         }       ],       "name": "tenderHashes",       "outputs": [         {           "name": "",           "type": "string"         }       ],       "payable": false,       "stateMutability": "view",       "type": "function"     },     {       "constant": true,       "inputs": [         {           "name": "",           "type": "string"         }       ],       "name": "tendersAddressMap",       "outputs": [         {           "name": "",           "type": "address"         }       ],       "payable": false,       "stateMutability": "view",       "type": "function"     },     {       "constant": false,       "inputs": [         {           "name": "newOwner",           "type": "address"         }       ],       "name": "transferOwnership",       "outputs": [],       "payable": false,       "stateMutability": "nonpayable",       "type": "function"     },     {       "inputs": [],       "payable": false,       "stateMutability": "nonpayable",       "type": "constructor"     },     {       "payable": false,       "stateMutability": "nonpayable",       "type": "fallback"     },     {       "anonymous": false,       "inputs": [         {           "indexed": true,           "name": "_tenderSubmissionId",           "type": "uint256"         }       ],       "name": "registeredTenderEvent",       "type": "event"     },     {       "anonymous": false,       "inputs": [         {           "indexed": true,           "name": "previousOwner",           "type": "address"         },         {           "indexed": true,           "name": "newOwner",           "type": "address"         }       ],       "name": "OwnershipTransferred",       "type": "event"     },     {       "constant": false,       "inputs": [],       "name": "toggleContractActive",       "outputs": [],       "payable": false,       "stateMutability": "nonpayable",       "type": "function"     },     {       "constant": false,       "inputs": [         {           "name": "ZIPFileDetails",           "type": "string"         },         {           "name": "ZIPFileHash",           "type": "string"         },         {           "name": "TenderSummary",           "type": "string"         },         {           "name": "SupplierDetails",           "type": "string"         },         {           "name": "SubmissionDate",           "type": "string"         }       ],       "name": "registerTenderSubmission",       "outputs": [         {           "name": "",           "type": "uint256"         }       ],       "payable": false,       "stateMutability": "nonpayable",       "type": "function"     },     {       "constant": true,       "inputs": [],       "name": "getTenderSubmissionsCount",       "outputs": [         {           "name": "",           "type": "uint256"         }       ],       "payable": false,       "stateMutability": "view",       "type": "function"     },     {       "constant": true,       "inputs": [         {           "name": "hash",           "type": "string"         }       ],       "name": "getTenderSubmitterAddress",       "outputs": [         {           "name": "",           "type": "address"         }       ],       "payable": false,       "stateMutability": "view",       "type": "function"     },     {       "constant": true,       "inputs": [         {           "name": "arrayIndex",           "type": "uint256"         }       ],       "name": "getZipFileHashByIndex",       "outputs": [         {           "name": "",           "type": "string"         }       ],       "payable": false,       "stateMutability": "view",       "type": "function"     },     {       "constant": true,       "inputs": [         {           "name": "hash",           "type": "string"         }       ],       "name": "getTenderSubmission",       "outputs": [         {           "name": "",           "type": "string"         },         {           "name": "",           "type": "string"         },         {           "name": "",           "type": "string"         },         {           "name": "",           "type": "string"         },         {           "name": "",           "type": "string"         },         {           "name": "",           "type": "uint256"         },         {           "name": "",           "type": "uint256"         }       ],       "payable": false,       "stateMutability": "view",       "type": "function"     },     {       "constant": true,       "inputs": [         {           "name": "hash",           "type": "string"         }       ],       "name": "checkTenderSubmission",       "outputs": [         {           "name": "",           "type": "bool"         }       ],       "payable": false,       "stateMutability": "view",       "type": "function"     },     {       "constant": true,       "inputs": [],       "name": "checkContractIsRunning",       "outputs": [         {           "name": "",           "type": "bool"         }       ],       "payable": false,       "stateMutability": "view",       "type": "function"     },     {       "constant": false,       "inputs": [],       "name": "destroy",       "outputs": [],       "payable": false,       "stateMutability": "nonpayable",       "type": "function"     }   ];
+    const documentRegistryContractABI = [     {       "constant": false,       "inputs": [],       "name": "renounceOwnership",       "outputs": [],       "payable": false,       "stateMutability": "nonpayable",       "type": "function"     },     {       "constant": true,       "inputs": [         {           "name": "",           "type": "string"         }       ],       "name": "tendersMap",       "outputs": [         {           "name": "ZIPFileDetails",           "type": "string"         },         {           "name": "ZIPFileHash",           "type": "string"         },         {           "name": "TenderSummary",           "type": "string"         },         {           "name": "SupplierDetails",           "type": "string"         },         {           "name": "SubmissionDate",           "type": "string"         },         {           "name": "BlockTime",           "type": "uint256"         },         {           "name": "IsSet",           "type": "uint256"         }       ],       "payable": false,       "stateMutability": "view",       "type": "function"     },     {       "constant": true,       "inputs": [],       "name": "owner",       "outputs": [         {           "name": "",           "type": "address"         }       ],       "payable": false,       "stateMutability": "view",       "type": "function"     },     {       "constant": true,       "inputs": [],       "name": "isOwner",       "outputs": [         {           "name": "",           "type": "bool"         }       ],       "payable": false,       "stateMutability": "view",       "type": "function"     },     {       "constant": true,       "inputs": [         {           "name": "",           "type": "uint256"         }       ],       "name": "tenderHashes",       "outputs": [         {           "name": "",           "type": "string"         }       ],       "payable": false,       "stateMutability": "view",       "type": "function"     },     {       "constant": true,       "inputs": [         {           "name": "",           "type": "string"         }       ],       "name": "tendersAddressMap",       "outputs": [         {           "name": "",           "type": "address"         }       ],       "payable": false,       "stateMutability": "view",       "type": "function"     },     {       "constant": false,       "inputs": [         {           "name": "newOwner",           "type": "address"         }       ],       "name": "transferOwnership",       "outputs": [],       "payable": false,       "stateMutability": "nonpayable",       "type": "function"     },     {       "inputs": [],       "payable": false,       "stateMutability": "nonpayable",       "type": "constructor"     },     {       "payable": false,       "stateMutability": "nonpayable",       "type": "fallback"     },     {       "anonymous": false,       "inputs": [         {           "indexed": true,           "name": "_tenderSubmissionId",           "type": "uint256"         }       ],       "name": "registeredTenderEvent",       "type": "event"     },     {       "anonymous": false,       "inputs": [         {           "indexed": true,           "name": "previousOwner",           "type": "address"         },         {           "indexed": true,           "name": "newOwner",           "type": "address"         }       ],       "name": "OwnershipTransferred",       "type": "event"     },     {       "constant": false,       "inputs": [],       "name": "toggleContractActive",       "outputs": [         {           "name": "",           "type": "bool"         }       ],       "payable": false,       "stateMutability": "nonpayable",       "type": "function"     },     {       "constant": false,       "inputs": [         {           "name": "ZIPFileDetails",           "type": "string"         },         {           "name": "ZIPFileHash",           "type": "string"         },         {           "name": "TenderSummary",           "type": "string"         },         {           "name": "SupplierDetails",           "type": "string"         },         {           "name": "SubmissionDate",           "type": "string"         }       ],       "name": "registerTenderSubmission",       "outputs": [         {           "name": "",           "type": "uint256"         }       ],       "payable": false,       "stateMutability": "nonpayable",       "type": "function"     },     {       "constant": true,       "inputs": [],       "name": "getTenderSubmissionsCount",       "outputs": [         {           "name": "",           "type": "uint256"         }       ],       "payable": false,       "stateMutability": "view",       "type": "function"     },     {       "constant": true,       "inputs": [         {           "name": "hash",           "type": "string"         }       ],       "name": "getTenderSubmitterAddress",       "outputs": [         {           "name": "",           "type": "address"         }       ],       "payable": false,       "stateMutability": "view",       "type": "function"     },     {       "constant": true,       "inputs": [         {           "name": "arrayIndex",           "type": "uint256"         }       ],       "name": "getZipFileHashByIndex",       "outputs": [         {           "name": "",           "type": "string"         }       ],       "payable": false,       "stateMutability": "view",       "type": "function"     },     {       "constant": true,       "inputs": [         {           "name": "hash",           "type": "string"         }       ],       "name": "getTenderSubmission",       "outputs": [         {           "name": "",           "type": "string"         },         {           "name": "",           "type": "string"         },         {           "name": "",           "type": "string"         },         {           "name": "",           "type": "string"         },         {           "name": "",           "type": "string"         },         {           "name": "",           "type": "uint256"         },         {           "name": "",           "type": "uint256"         }       ],       "payable": false,       "stateMutability": "view",       "type": "function"     },     {       "constant": true,       "inputs": [         {           "name": "hash",           "type": "string"         }       ],       "name": "checkTenderSubmission",       "outputs": [         {           "name": "",           "type": "bool"         }       ],       "payable": false,       "stateMutability": "view",       "type": "function"     },     {       "constant": true,       "inputs": [],       "name": "checkContractIsRunning",       "outputs": [         {           "name": "",           "type": "bool"         }       ],       "payable": false,       "stateMutability": "view",       "type": "function"     },     {       "constant": false,       "inputs": [],       "name": "destroy",       "outputs": [],       "payable": false,       "stateMutability": "nonpayable",       "type": "function"     }   ];
 
     var CONSTANTS = {
                   HOME_TENDER_DOCS_MENU_BUTTON : "#homeTenderDocsMenuButton",
@@ -183,6 +183,25 @@ $(document).ready(function() {
       $(parentDivID).html(divNotificationHtml);
     };
 
+    //function to handle errorfrom smart contract call
+    function handle_error(err) {
+        console.log("function handle_error(err).");
+        var message_type = CONSTANTS.ERROR; //error or success
+        var error_data = err.data;
+        var message_description = "Tender Submission Registry smart contract call failed: " + err;
+        if (typeof error_data !== 'undefined'){
+            var error_message = error_data.message;
+            if (typeof error_message !== 'undefined')
+            {
+                message_description = "Tender Submission Registry smart contract call failed: " + error_message;
+            }
+        }
+
+        // trigger notification
+        triggerNotificationOpen(CONSTANTS.NOTIFICATION_BAR_DIV, '"divVerifyTenderZIPAlert"', message_description, message_type);
+        return console.log(message_description);
+    };
+
     //function to display row based on menu button selection
     function displayRow(rowName, formName) {
         // Hide rows
@@ -335,16 +354,7 @@ $(document).ready(function() {
             contract.registerTenderSubmission(webZipFileDetails, documentHash, tender_num, supplier_details, submission_date.toString(),
                 function(err, result) {
             if (err){
-                var message_type = CONSTANTS.ERROR; //error or success
-                var error_message = err.data.message;
-                var message_description = "Tender Submission Registry smart contract call failed: " + err;
-                if (error_message !== 'undefined'){
-                    message_description = "Tender Submission Registry smart contract call failed: " + err.data.message;
-                }
-
-                //trigger notification
-                triggerNotificationOpen(CONSTANTS.NOTIFICATION_BAR_DIV, '"divUploadTenderZIPAlert"', message_description, message_type);
-                return console.log(message_description);
+                handle_error(err);
             }
 
             var message_type = CONSTANTS.SUCCESS; //error or success
@@ -411,16 +421,17 @@ $(document).ready(function() {
             let contract = web3.eth.contract(documentRegistryContractABI).at(documentRegistryContractAddress);
             contract.getTenderSubmission(documentHash, function(err, result) {
                 if (err){
-                    var message_type = CONSTANTS.ERROR; //error or success
-                    var error_message = err.data.message;
-                    var message_description = "Tender Submission Registry smart contract call failed: " + err;
-                    if (error_message !== 'undefined'){
-                        message_description = "Tender Submission Registry smart contract call failed: " + err.data.message;
-                    }
-
-                    //trigger notification
-                    triggerNotificationOpen(CONSTANTS.NOTIFICATION_BAR_DIV, '"divVerifyTenderZIPAlert"', message_description, message_type);
-                    return console.log(message_description);
+                    handle_error(err);
+                    // var message_type = CONSTANTS.ERROR; //error or success
+                    // var error_message = err.data.message;
+                    // var message_description = "Tender Submission Registry smart contract call failed: " + err;
+                    // if (error_message !== 'undefined'){
+                    //     message_description = "Tender Submission Registry smart contract call failed: " + err.data.message;
+                    // }
+                    //
+                    // //trigger notification
+                    // triggerNotificationOpen(CONSTANTS.NOTIFICATION_BAR_DIV, '"divVerifyTenderZIPAlert"', message_description, message_type);
+                    // return console.log(message_description);
                 }
 
                 //result:
@@ -518,16 +529,7 @@ $(document).ready(function() {
             let contract = web3.eth.contract(documentRegistryContractABI).at(documentRegistryContractAddress);
             contract.getTenderSubmitterAddress(documentHash, function(err, result) {
                 if (err){
-                    var message_type = CONSTANTS.ERROR; //error or success
-                    var error_message = err.data.message;
-                    var message_description = "Tender Submission Registry smart contract call failed: " + err;
-                    if (error_message !== 'undefined'){
-                        message_description = "Tender Submission Registry smart contract call failed: " + err.data.message;
-                    }
-
-                    //trigger notification
-                    triggerNotificationOpen(CONSTANTS.NOTIFICATION_BAR_DIV, '"divVerifyTenderZIPAlert"', message_description, message_type);
-                    return console.log(message_description);
+                    handle_error(err);
                 }
 
                 //result:
@@ -575,16 +577,7 @@ $(document).ready(function() {
         let contract = web3.eth.contract(documentRegistryContractABI).at(documentRegistryContractAddress);
             contract.getTenderSubmissionsCount(function(err, result) {
                 if (err){
-                    var message_type = CONSTANTS.ERROR; //error or success
-                    var error_message = err.data.message;
-                    var message_description = "Tender Submission Registry smart contract call failed: " + err;
-                    if (error_message !== 'undefined'){
-                        message_description = "Tender Submission Registry smart contract call failed: " + err.data.message;
-                    }
-
-                    // trigger notification
-                    triggerNotificationOpen(CONSTANTS.NOTIFICATION_BAR_DIV, '"divVerifyTenderZIPAlert"', message_description, message_type);
-                    return console.log(message_description);
+                    handle_error(err);
                 }
 
                 let tenderSubmissionsCount = result.toNumber(); // Output from the contract function call
@@ -618,16 +611,7 @@ $(document).ready(function() {
         let contract = web3.eth.contract(documentRegistryContractABI).at(documentRegistryContractAddress);
             contract.checkContractIsRunning(function(err, result) {
                 if (err){
-                    var message_type = CONSTANTS.ERROR; //error or success
-                    var error_message = err.data.message;
-                    var message_description = "Tender Submission Registry smart contract call failed: " + err;
-                    if (error_message !== 'undefined'){
-                        message_description = "Tender Submission Registry smart contract call failed: " + err.data.message;
-                    }
-
-                    // trigger notification
-                    triggerNotificationOpen(CONSTANTS.NOTIFICATION_BAR_DIV, '"divVerifyTenderZIPAlert"', message_description, message_type);
-                    return console.log(message_description);
+                    handle_error(err);
                 }
 
                 console.log("Is TSR Contract currently stopped " + result);
@@ -652,22 +636,13 @@ $(document).ready(function() {
         let contract = web3.eth.contract(documentRegistryContractABI).at(documentRegistryContractAddress);
             contract.toggleContractActive(function(err, result) {
                 if (err){
-                    var message_type = CONSTANTS.ERROR; //error or success
-                    var error_message = err.data.message;
-                    var message_description = "Tender Submission Registry smart contract call failed: " + err;
-                    if (error_message !== 'undefined'){
-                        message_description = "Tender Submission Registry smart contract call failed: " + err.data.message;
-                    }
-
-                    // trigger notification
-                    triggerNotificationOpen(CONSTANTS.NOTIFICATION_BAR_DIV, '"divVerifyTenderZIPAlert"', message_description, message_type);
-                    return console.log(message_description);
+                    handle_error(err);
                 }
 
-                console.log("result: " + result);
+                console.log("Is contract currently stopped: " + result);
 
                 // trigger a custom notification directly above the count button
-                var toggleContractStatusHtml = '<div class="alert alert-success fade in show"><button type="button" class="close close-alert" data-dismiss="alert" aria-hidden="true">×</button><strong>TSR Contract status toggled. Now set to: </strong>' + result +'</div>'
+                var toggleContractStatusHtml = '<div class="alert alert-success fade in show"><button type="button" class="close close-alert" data-dismiss="alert" aria-hidden="true">×</button><strong>TSR Contract status toggled. Now set to: </strong>' + !result +'</div>'
                 $(CONSTANTS.TOGGLE_CONTRACT_STATUS_DIV).html(toggleContractStatusHtml);
         });
     };
@@ -686,23 +661,17 @@ $(document).ready(function() {
         let contract = web3.eth.contract(documentRegistryContractABI).at(documentRegistryContractAddress);
             contract.destroy(function(err, result) {
                 if (err){
-                    var message_type = CONSTANTS.ERROR; //error or success
-                    var error_message = err.data.message;
-                    var message_description = "Tender Submission Registry smart contract call failed: " + err;
-                    if (error_message !== 'undefined'){
-                        message_description = "Tender Submission Registry smart contract call failed: " + err.data.message;
-                    }
-
-                    // trigger notification
-                    triggerNotificationOpen(CONSTANTS.NOTIFICATION_BAR_DIV, '"divVerifyTenderZIPAlert"', message_description, message_type);
-                    return console.log(message_description);
+                    handle_error(err);
                 }
 
                 console.log("result: " + result);
 
                 // trigger a custom notification directly above the count button
-                var destroyContractHtml = '<div class="alert alert-success fade in show"><button type="button" class="close close-alert" data-dismiss="alert" aria-hidden="true">×</button><strong>Contract destroy initiated </strong>' + result +'</div>'
-                $(CONSTANTS.DESTROY_CONTRACT_DIV).html(destroyContractHtml);
+                if (typeof result !== 'undefined')
+                {
+                    var destroyContractHtml = '<div class="alert alert-success fade in show"><button type="button" class="close close-alert" data-dismiss="alert" aria-hidden="true">×</button><strong>Contract destroy initiated </strong>' + result +'</div>'
+                    $(CONSTANTS.DESTROY_CONTRACT_DIV).html(destroyContractHtml);
+                }
         });
     };
 });
