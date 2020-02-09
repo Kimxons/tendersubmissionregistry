@@ -124,7 +124,7 @@ $touch 2_deploy_contract.js
 This project will give you an ID that you will use in `truffle-config.js`
 infura means you do not have to sync an ether node or ropsten node to deploy directly.
 
-5. Get test ether from https://faucet.ropsten.io/ (you will need to create an Ethereum ropsten account on MetaMask then use the address on the faucet).
+5. Get test ether from https://faucet.ropsten.be/ (you will need to create an Ethereum ropsten account on MetaMask then use the address on the faucet).
 e.g. 0x4B67D20a4F27d248aF0462C23F8C193f073517FB
 
 6. Update `truffle-config.js` with ropsten. This will deploy from the metamask accounts, by default account 0 so specify which one you want.
