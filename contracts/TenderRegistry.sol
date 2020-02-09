@@ -234,7 +234,7 @@ contract TenderRegistry is Ownable {
      * @dev Remove the storage and code from the state.
      * Can only be called by the current owner.
      */
-    function destroy() public onlyInEmergency onlyOwner {
+    function destroy() public onlyOwner onlyInEmergency {
         // cast owner which is address to address payable
         //contractOwner = address(uint160(owner));
         selfdestruct(contractOwner);
