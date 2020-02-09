@@ -122,19 +122,19 @@ $touch 2_deploy_contract.js
 
 4. Create infura project  at https://infura.io (Infura gives you access to test network).
 This project will give you an ID that you will use in `truffle-config.js`
-infura means you do not have to sync an ether node or rinkeby node to deploy directly.
+infura means you do not have to sync an ether node or ropsten node to deploy directly.
 
-5. Get test ether from https://faucet.rinkeby.io/ (you will need to create an Ethereum rinkeby wallet on MetaMask then use the address on twitter).
+5. Get test ether from https://faucet.ropsten.io/ (you will need to create an Ethereum ropsten account on MetaMask then use the address on the faucet).
 e.g. 0x4B67D20a4F27d248aF0462C23F8C193f073517FB
 
-6. Update `truffle-config.js` with rinkeby. This will deploy from the metamask accounts, by default account 0 so specify which one you want.
+6. Update `truffle-config.js` with ropsten. This will deploy from the metamask accounts, by default account 0 so specify which one you want.
 
-7. Deploy to rinkeby. 
+7. Deploy to ropsten. 
 ```
-$truffle migrate --network rinkeby --compile-all --reset
+$truffle migrate --network ropsten --compile-all --reset
 ```
 
-8. Check contract on rinkeby etherscan https://rinkeby.etherscan.io
+8. Check contract on ropsten etherscan https://ropsten.etherscan.io/address/0x650168110ADa1f089D443904c6759b7349576A0d
 
 
 ## Production Deployment
