@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    const documentRegistryContractAddress = '0xa4d2402be3EFE16CdFBe34C486F2937f7EB88800';
+    const documentRegistryContractAddress = '0x121BC9704baAcF5358ABf54b7198C4F3EAd8AA52';
 
     // The second is the Application Binary interface or the ABI of the contract code.
     // ABI is just a list of method signatures, return types, members etc of the contract in a defined JSON format.
@@ -183,7 +183,7 @@ $(document).ready(function() {
       $(parentDivID).html(divNotificationHtml);
     };
 
-    //function to handle errorfrom smart contract call
+    //function to handle error from smart contract call
     function handle_error(err) {
         console.log("function handle_error(err).");
         var message_type = CONSTANTS.ERROR; //error or success
@@ -199,6 +199,18 @@ $(document).ready(function() {
 
         // trigger notification
         triggerNotificationOpen(CONSTANTS.NOTIFICATION_BAR_DIV, '"divVerifyTenderZIPAlert"', message_description, message_type);
+        return console.log(message_description);
+    };
+
+
+    //function to handle web 3 undefined error from smart contract call
+    function handle_web3_undefined_error() {
+        console.log("function handle_web3_undefined_error(err).");
+        var message_type = CONSTANTS.ERROR; //error or success
+        var message_description = "Please install MetaMask to access the Ethereum Web3 injected API from your Web browser.";
+
+        //trigger notification
+        triggerNotificationOpen(CONSTANTS.NOTIFICATION_BAR_DIV, '"divUploadTenderZIPAlert"', message_description, message_type);
         return console.log(message_description);
     };
 
@@ -316,12 +328,7 @@ $(document).ready(function() {
         fileReader.onload = function() {
             let documentHash = sha256(fileReader.result);
             if (typeof web3 === 'undefined'){
-                var message_type = CONSTANTS.ERROR; //error or success
-                var message_description = "Please install MetaMask to access the Ethereum Web3 injected API from your Web browser.";
-
-                //trigger notification
-                triggerNotificationOpen(CONSTANTS.NOTIFICATION_BAR_DIV, '"divUploadTenderZIPAlert"', message_description, message_type);
-                return console.log(message_description);
+                return handle_web3_undefined_error();
             }
 
             console.log("ZIP File  " + zip_filename + " (size " + zip_filesize + "MB) successfully hashed (hash value "
@@ -354,7 +361,7 @@ $(document).ready(function() {
             contract.registerTenderSubmission(webZipFileDetails, documentHash, tender_num, supplier_details, submission_date.toString(),
                 function(err, result) {
             if (err){
-                handle_error(err);
+                return handle_error(err);
             }
 
             var message_type = CONSTANTS.SUCCESS; //error or success
@@ -408,12 +415,7 @@ $(document).ready(function() {
         fileReader.onload = function() {
             let documentHash = sha256(fileReader.result); //fileReader.result is base64 encoded source of the file
             if (typeof web3 === 'undefined'){
-                var message_type = CONSTANTS.ERROR; //error or success
-                var message_description = "Please install MetaMask to access the Ethereum Web3 injected API from your Web browser.";
-
-                //trigger notification
-                triggerNotificationOpen(CONSTANTS.NOTIFICATION_BAR_DIV, '"divVerifyTenderZIPAlert"', message_description, message_type);
-                return console.log(message_description);
+                return handle_web3_undefined_error();
             }
 
             console.log(webZipFileDetails + " successfully hashed (hash value "+ documentHash + ").");
@@ -421,7 +423,7 @@ $(document).ready(function() {
             let contract = web3.eth.contract(documentRegistryContractABI).at(documentRegistryContractAddress);
             contract.getTenderSubmission(documentHash, function(err, result) {
                 if (err){
-                    handle_error(err);
+                    return handle_error(err);
                     // var message_type = CONSTANTS.ERROR; //error or success
                     // var error_message = err.data.message;
                     // var message_description = "Tender Submission Registry smart contract call failed: " + err;
@@ -516,12 +518,7 @@ $(document).ready(function() {
         fileReader.onload = function() {
             let documentHash = sha256(fileReader.result); //fileReader.result is base64 encoded source of the file
             if (typeof web3 === 'undefined'){
-                var message_type = CONSTANTS.ERROR; //error or success
-                var message_description = "Please install MetaMask to access the Ethereum Web3 injected API from your Web browser.";
-
-                //trigger notification
-                triggerNotificationOpen(CONSTANTS.NOTIFICATION_BAR_DIV, '"divVerifyTenderZIPAlert"', message_description, message_type);
-                return console.log(message_description);
+                return handle_web3_undefined_error();
             }
 
             console.log(webZipFileDetails + " successfully hashed (hash value "+ documentHash + ").");
@@ -529,7 +526,7 @@ $(document).ready(function() {
             let contract = web3.eth.contract(documentRegistryContractABI).at(documentRegistryContractAddress);
             contract.getTenderSubmitterAddress(documentHash, function(err, result) {
                 if (err){
-                    handle_error(err);
+                    return handle_error(err);
                 }
 
                 //result:
@@ -566,112 +563,98 @@ $(document).ready(function() {
     // function to get count of Tender ZIP files that have been previously uploaded
     function getTenderDocsCount() {
         if (typeof web3 === 'undefined'){
-                var message_type = CONSTANTS.ERROR; //error or success
-                var message_description = "Please install MetaMask to access the Ethereum Web3 injected API from your Web browser.";
-
-                // trigger notification
-                triggerNotificationOpen(CONSTANTS.NOTIFICATION_BAR_DIV, '"divVerifyTenderZIPAlert"', message_description, message_type);
-                return console.log(message_description);
+                return handle_web3_undefined_error();
             }
 
         let contract = web3.eth.contract(documentRegistryContractABI).at(documentRegistryContractAddress);
-            contract.getTenderSubmissionsCount(function(err, result) {
-                if (err){
-                    handle_error(err);
-                }
+        contract.getTenderSubmissionsCount(function(err, result) {
+            if (err){
+                return handle_error(err);
+            }
 
-                let tenderSubmissionsCount = result.toNumber(); // Output from the contract function call
+            let tenderSubmissionsCount = result.toNumber(); // Output from the contract function call
 
-                console.log("getTenderSubmissionsCount: " + tenderSubmissionsCount);
+            console.log("getTenderSubmissionsCount: " + tenderSubmissionsCount);
 
-                // trigger a custom notification directly above the count button
-                var tenderSubmissionsCountHtml = '<div class="alert alert-success fade in show"><button type="button" class="close close-alert" data-dismiss="alert" aria-hidden="true">×</button><strong>Number of Tender Submissions: </strong>' + tenderSubmissionsCount +'</div>'
-                $(CONSTANTS.TENDER_DOCS_COUNT_DIV).html(tenderSubmissionsCountHtml);
+            // trigger a custom notification directly above the count button
+            var tenderSubmissionsCountHtml = '<div class="alert alert-success fade in show"><button type="button" class="close close-alert" data-dismiss="alert" aria-hidden="true">×</button><strong>Number of Tender Submissions: </strong>' + tenderSubmissionsCount +'</div>'
+            $(CONSTANTS.TENDER_DOCS_COUNT_DIV).html(tenderSubmissionsCountHtml);
 
-                // trigger notification (which is above the page title)
-                // var message_type = CONSTANTS.SUCCESS; //error or success
-                // var message_description =`<b>Number of Tender Submissions:</b>  ${tenderSubmissionsCount}.`;
+            // trigger notification (which is above the page title)
+            // var message_type = CONSTANTS.SUCCESS; //error or success
+            // var message_description =`<b>Number of Tender Submissions:</b>  ${tenderSubmissionsCount}.`;
 
-                // triggerNotificationOpen(CONSTANTS.NOTIFICATION_BAR_DIV, '"divVerifyTenderZIPAlert"', message_description, message_type);
-
+            // triggerNotificationOpen(CONSTANTS.NOTIFICATION_BAR_DIV, '"divVerifyTenderZIPAlert"', message_description, message_type);
         });
     };
 
     // function to check TSR Contract Status - stopped or not stopped
     function getContractStatus() {
         if (typeof web3 === 'undefined'){
-                var message_type = CONSTANTS.ERROR; //error or success
-                var message_description = "Please install MetaMask to access the Ethereum Web3 injected API from your Web browser.";
-
-                // trigger notification
-                triggerNotificationOpen(CONSTANTS.NOTIFICATION_BAR_DIV, '"divVerifyTenderZIPAlert"', message_description, message_type);
-                return console.log(message_description);
+                return handle_web3_undefined_error();
             }
 
         let contract = web3.eth.contract(documentRegistryContractABI).at(documentRegistryContractAddress);
-            contract.checkContractIsRunning(function(err, result) {
-                if (err){
-                    handle_error(err);
-                }
+        contract.checkContractIsRunning(function(err, result) {
+            if (err){
+                return handle_error(err);
+            }
 
-                console.log("Is TSR Contract currently stopped " + result);
+            console.log("Is TSR Contract currently stopped " + result);
 
-                // trigger a custom notification directly above the count button
-                var contractStatusHtml = '<div class="alert alert-success fade in show"><button type="button" class="close close-alert" data-dismiss="alert" aria-hidden="true">×</button><strong>TSR Contract running status: </strong>' + !result +'</div>'
-                $(CONSTANTS.CHECK_CONTRACT_STATUS_DIV).html(contractStatusHtml);
+            // trigger a custom notification directly above the count button
+            var contractStatusHtml = '<div class="alert alert-success fade in show"><button type="button" class="close close-alert" data-dismiss="alert" aria-hidden="true">×</button><strong>TSR Contract running status: </strong>' + !result +'</div>'
+            $(CONSTANTS.CHECK_CONTRACT_STATUS_DIV).html(contractStatusHtml);
         });
     };
 
     // function to toggle contract status between stopped and not stopped
     function toggleContractStatus() {
         if (typeof web3 === 'undefined'){
-                var message_type = CONSTANTS.ERROR; //error or success
-                var message_description = "Please install MetaMask to access the Ethereum Web3 injected API from your Web browser.";
-
-                // trigger notification
-                triggerNotificationOpen(CONSTANTS.NOTIFICATION_BAR_DIV, '"divVerifyTenderZIPAlert"', message_description, message_type);
-                return console.log(message_description);
+                return handle_web3_undefined_error();
             }
 
         let contract = web3.eth.contract(documentRegistryContractABI).at(documentRegistryContractAddress);
-            contract.toggleContractActive(function(err, result) {
-                if (err){
-                    handle_error(err);
-                }
+        contract.checkContractIsRunning(function(err, result) {
+            if (err) {
+                return handle_error(err);
+            };
+            var original_contract_status = result;
+            console.log("Is TSR Contract currently stopped before toggle: " + original_contract_status);
 
-                console.log("Is contract currently stopped: " + result);
+            contract.toggleContractActive(function(err2, result2) {
+                if (err2){
+                    return handle_error(err2);
+                };
+                var new_contract_status = !original_contract_status;
 
                 // trigger a custom notification directly above the count button
-                var toggleContractStatusHtml = '<div class="alert alert-success fade in show"><button type="button" class="close close-alert" data-dismiss="alert" aria-hidden="true">×</button><strong>TSR Contract status toggled. Now set to: </strong>' + !result +'</div>'
+                var toggleContractStatusHtml = '<div class="alert alert-success fade in show"><button type="button" class="close close-alert" data-dismiss="alert" aria-hidden="true">×</button><strong>TSR Contract status toggled. TSR Contract running status: </strong>' + !new_contract_status +'</div>'
                 $(CONSTANTS.TOGGLE_CONTRACT_STATUS_DIV).html(toggleContractStatusHtml);
+            });
         });
     };
 
     // function to initiate TSR selfdestruct
     function destroyContract() {
         if (typeof web3 === 'undefined'){
-                var message_type = CONSTANTS.ERROR; //error or success
-                var message_description = "Please install MetaMask to access the Ethereum Web3 injected API from your Web browser.";
-
-                // trigger notification
-                triggerNotificationOpen(CONSTANTS.NOTIFICATION_BAR_DIV, '"divVerifyTenderZIPAlert"', message_description, message_type);
-                return console.log(message_description);
+                return handle_web3_undefined_error();
             }
 
         let contract = web3.eth.contract(documentRegistryContractABI).at(documentRegistryContractAddress);
-            contract.destroy(function(err, result) {
-                if (err){
-                    handle_error(err);
-                }
+        contract.destroy(function(err, result) {
+            if (err){
+                return handle_error(err);
+            }
 
-                console.log("result: " + result);
+            console.log("result: " + result);
 
-                // trigger a custom notification directly above the count button
-                if (typeof result !== 'undefined')
-                {
-                    var destroyContractHtml = '<div class="alert alert-success fade in show"><button type="button" class="close close-alert" data-dismiss="alert" aria-hidden="true">×</button><strong>Contract destroy initiated </strong>' + result +'</div>'
-                    $(CONSTANTS.DESTROY_CONTRACT_DIV).html(destroyContractHtml);
-                }
+            // trigger a custom notification directly above the count button
+            if (typeof result !== 'undefined')
+            {
+                var destroyContractHtml = '<div class="alert alert-success fade in show"><button type="button" class="close close-alert" data-dismiss="alert" aria-hidden="true">×</button><strong>Contract destroy initiated </strong>' + result +'</div>'
+                $(CONSTANTS.DESTROY_CONTRACT_DIV).html(destroyContractHtml);
+            }
         });
     };
 });
