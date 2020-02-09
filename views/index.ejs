@@ -23,25 +23,58 @@
           <div class="row align-items-center justify-content-center" id="howItWorksTenderDocsRow">
             <div class="col-md-8">
               <h4>
-                <p class="text-muted text-center">HOW IT WORKS</p>
+                <p class="text-muted text-center">FEATURES</p>
               </h4>
-              <!--<p>Struct Bid Number, Terms of Reference, Bid Specifications, Briefing Session, Published Date, Closing date, Supplier ID, Supplier Representative (Name & Surname)</p>-->
             </div>
-            <div class="card-deck col-md-8">
-              <div class="card shadow-sm bg-primary">
-                <div class="card-header"><b>Step 01</b></div>
-                <div class="card-body">
-                  <h5 class="card-title">Upload Tender Documents</h5>
-                  <p class="card-text">ZIP file of tender documents is uploaded by authorised representative of supplier company. The hash of the ZIP file is calculated and stored on the Blockchain together with the date of submission for later verification.</p>
+            <div class = "row">
+                <div class="card-deck col-md-12">
+                  <div class="card shadow-sm border-primary">
+                    <div class="card-header text-primary"><b>Upload Tender Documents</b></div>
+                    <div class="card-body text-primary">
+                      <p class="card-text">ZIP file of tender documents is uploaded by authorised representative of supplier company. The hash of the ZIP file is calculated and stored on the Blockchain together with the date of submission for later verification.</p>
+                    </div>
+                  </div>
+                  <div class="card shadow-sm border-secondary">
+                    <div class="card-header text-secondary"><b>Verify Tender Documents</b></div>
+                    <div class="card-body text-secondary">
+                      <p class="card-text">During tender vetting process, authorised representative of company that issued the tender uploads the ZIP file from their tender portal. If the ZIP file has been modified after submission, the hash will not match with the one stored on the Blockchain and the supplier is disqualified. Similarly, this can be used to verify that a ZIP FIle has not been previously submitted.</p>
+                    </div>
+                  </div>
+                  <div class="card shadow-sm border-warning">
+                    <div class="card-header text-warning"><b>Retrieve Tender Submitter Address</b></div>
+                    <div class="card-body text-warning">
+                      <p class="card-text">Retrieve address responsible for submitting a Tender Submission ZIP File.  This feature is available to Admins only.</p>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div class="card shadow-sm bg-secondary">
-                <div class="card-header"><b>Step 02</b></div>
-                <div class="card-body">
-                  <h5 class="card-title">Verify Tender Documents</h5>
-                  <p class="card-text">During tender vetting process, authorised representative of company that issued the tender uploads the ZIP file from their tender portal. If the ZIP file has been modified after submission, the hash will not match with the one stored on the Blockchain and the supplier is disqualified.</p>
+            </div>
+            <div class="row mt-3">
+                <div class="card-deck col-md-12">
+                  <div class="card shadow-sm border-info">
+                    <div class="card-header text-info"><b>Count Tender Submissions</b></div>
+                    <div class="card-body text-info">
+                      <p class="card-text">Count number of Tender Submissions. This feature is available to Admins only.</p>
+                    </div>
+                  </div>
+                  <div class="card shadow-sm border-dark">
+                    <div class="card-header text-dark"><b>Check Contract Status</b></div>
+                    <div class="card-body text-dark">
+                      <p class="card-text">Check whether the contract is available or not.</p>
+                    </div>
+                  </div>
+                  <div class="card shadow-sm border-success">
+                    <div class="card-header text-success"><b>Toggle Contract Status</b></div>
+                    <div class="card-body text-success">
+                      <p class="card-text">Toggle contract between available and unavailable states (circuit breaker).  This feature is available to Admins only.</p>
+                    </div>
+                  </div>
+                  <div class="card shadow-sm border-danger">
+                    <div class="card-header text-danger"><b>Destroy Contract</b></div>
+                    <div class="card-body text-danger">
+                      <p class="card-text">Remove TSR Contract from Blockchain.  This feature is available to Admins only.</p>
+                    </div>
+                  </div>
                 </div>
-              </div>
             </div>
           </div>
           <div class="row align-items-center justify-content-center" id="uploadTenderDocsRow">
