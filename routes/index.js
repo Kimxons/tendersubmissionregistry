@@ -9,14 +9,6 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: title, title_main: title_main, title_sub: title_sub  });
 });
 
-/* GET test page. */
-router.get('/index2', function(req, res, next) {
-  var title = 'Tender Submission Registry. Tracing tender documents from submission to contract awarding.';
-  var title_main = 'Tender Submission Registry.';
-  var title_sub = 'Tracing tender documents from submission to contract awarding.';
-  res.render('index2', { title: title, title_main: title_main, title_sub: title_sub  });
-});
-
 //XmlHTTP request flash messages
 router.post('/flash', function(req,res) {
     var title = 'Tender Submission Registry. Tracing tender documents from submission to contract awarding.';
