@@ -62,6 +62,7 @@ $(document).ready(function() {
                   NOTIFICATION_BAR_ROW: "#notificationBarRow",
                   HOW_IT_WORKS: "#howItWorksTenderDocsRow",
                   NOTIFICATION_BAR_DIV: "#divNotificationBar",
+                  CURRENT_ETHEREUM_ACCOUNT_DIV: "#currentEtheremAccountDiv",
 
                   SUCCESS: "success",
                   ERROR: "error",
@@ -202,6 +203,32 @@ $(document).ready(function() {
         return console.log(message_description);
     };
 
+    //function to dispaly current ethereum account
+    async function getCurrentEthereumAccount() {
+        if (window.ethereum)
+			try {
+				await window.ethereum.enable();
+			} catch (err) {
+                var message_type = CONSTANTS.ERROR; //error or success
+                var message_description = "Access to your Ethereum account rejected.";
+
+                //trigger notification
+                triggerNotificationOpen(CONSTANTS.NOTIFICATION_BAR_DIV, '"divUploadTenderZIPAlert"', message_description, message_type);
+                return console.log(message_description);
+			}
+
+        if (typeof web3 === 'undefined'){
+                return handle_web3_undefined_error();
+            }
+
+        var currentAccount = web3.eth.accounts[0];
+        console.log("currentAccount " + currentAccount);
+
+        var currentEthereumAccountHtml = '<p> Current Ethereum Account: ' + currentAccount +'</p>';
+        $(CONSTANTS.CURRENT_ETHEREUM_ACCOUNT_DIV).html(currentEthereumAccountHtml);
+    };
+
+    var account = web3.currentProvider.selectedAddress
 
     //function to handle web 3 undefined error from smart contract call
     function handle_web3_undefined_error() {
@@ -255,6 +282,9 @@ $(document).ready(function() {
             }
 
         }
+
+        // Display current ethereum account
+        getCurrentEthereumAccount();
 
         // Display the passed in row
         $(rowName).show();
