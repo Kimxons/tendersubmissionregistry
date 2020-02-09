@@ -21,9 +21,9 @@ TSR has 3 main use cases:
 
 ## Documentation
 Additional documentation in the following files:
-- [Avoiding Common Attacks](../blob/master/avoiding_common_attacks.md)
-- [Deployed Addresses](../blob/master/deployed_addresses.md)
-- [Design Pattern Decisions](../blob/master/design_pattern_decisions.md)
+- [Avoiding Common Attacks](../master/avoiding_common_attacks.md)
+- [Deployed Addresses](../master/deployed_addresses.md)
+- [Design Pattern Decisions](../master/design_pattern_decisions.md)
 
 
 
