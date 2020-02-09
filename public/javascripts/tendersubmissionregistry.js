@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    const documentRegistryContractAddress = ' 0x650168110ADa1f089D443904c6759b7349576A0d';
+    const documentRegistryContractAddress = '0x650168110ADa1f089D443904c6759b7349576A0d';
 
     // The second is the Application Binary interface or the ABI of the contract code.
     // ABI is just a list of method signatures, return types, members etc of the contract in a defined JSON format.
@@ -229,6 +229,7 @@ $(document).ready(function() {
         $(CONSTANTS.DESTROY_CONTRACT_ROW).hide();
 
         // reset custom notifications
+        $(CONSTANTS.TENDER_DOCS_COUNT_DIV).html(CONSTANTS.EMPTY_STRING);
         $(CONSTANTS.DESTROY_CONTRACT_DIV).html(CONSTANTS.EMPTY_STRING);
         $(CONSTANTS.TOGGLE_CONTRACT_STATUS_DIV).html(CONSTANTS.EMPTY_STRING);
         $(CONSTANTS.CHECK_CONTRACT_STATUS_DIV).html(CONSTANTS.EMPTY_STRING);
@@ -365,7 +366,7 @@ $(document).ready(function() {
             }
 
             var message_type = CONSTANTS.SUCCESS; //error or success
-            var message_description = `Tender Documents ${webZipFileDetails} with hash ${documentHash} <b>successfully added</b> to the Tender Submission Registry (Blockchain).`;
+            var message_description = `Transaction submitted to Blockchain for processing (Upload Tender Documents ${webZipFileDetails} with hash ${documentHash}). Check your Metamask for transaction update.`;
 
             //reset upload form
             $(CONSTANTS.UPLOAD_TENDER_DOCS_FORM).get(0).reset();
@@ -630,7 +631,7 @@ $(document).ready(function() {
                 var new_contract_status = !original_contract_status;
 
                 // trigger a custom notification directly above the count button
-                var toggleContractStatusHtml = '<div class="alert alert-success fade in show"><button type="button" class="close close-alert" data-dismiss="alert" aria-hidden="true">×</button><strong>TSR Contract status toggled. TSR Contract running status: </strong>' + !new_contract_status +'</div>'
+                var toggleContractStatusHtml = '<div class="alert alert-success fade in show"><button type="button" class="close close-alert" data-dismiss="alert" aria-hidden="true">×</button><strong>TSR Contract status toggled. Transaction submitted to Blockchain for processing (TSR Contract running status: </strong>' + !new_contract_status +'</div>). Check your Metamask for transaction update.'
                 $(CONSTANTS.TOGGLE_CONTRACT_STATUS_DIV).html(toggleContractStatusHtml);
             });
         });
