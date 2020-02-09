@@ -21,7 +21,7 @@ contract('TenderRegistry', function (accounts) {
   const TenderSummary = '1003 - Train Data Center Operators';
   const SupplierDetails = '{SubmitterFullName:"John Doe", SubmitterIdentificationNumber:"12345678",SupplierID:123}';
   const SubmissionDate = 'Wed Feb 05 2020 00:09:56 GMT+0200 (South Africa Standard Time)';
-  const SubmissionBlocktime = 1580854200;
+  const SubmissionBlockNumber = 1;
   const IsSet = 1;
 
   const FakeZIPFileHash = '12345678984f1e919c4b896a0701637ff0260b834e1c18f3a9776c12fbf82311';
