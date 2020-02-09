@@ -95,8 +95,9 @@ contract TenderRegistry is Ownable {
     /*
         @dev Circuit breaker switch
     */
-    function toggleContractActive() onlyOwner public {
+    function toggleContractActive() onlyOwner public returns (bool) {
         stopped = !stopped;
+        return stopped;
     }
 
     /*
@@ -162,7 +163,7 @@ contract TenderRegistry is Ownable {
      * @dev Returns the number of TenderSubmissions tracked on Blockchain.
      * Can only be called by the current owner.
      */
-    function getTenderSubmissionsCount() external onlyInEmergency onlyOwner view returns(uint) {
+    function getTenderSubmissionsCount() external onlyOwner stopInEmergency view returns(uint) {
         return tenderHashes.length;
     }
 
@@ -212,6 +213,13 @@ contract TenderRegistry is Ownable {
           }
         // otherwise return false
         return false;
+    }
+
+     /**
+     * @dev Confirm whether the contract is stopped or not.
+     */
+    function checkContractIsRunning() public view returns (bool) {
+        return stopped;
     }
 
     /**
