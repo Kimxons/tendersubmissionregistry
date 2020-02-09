@@ -54,7 +54,7 @@ $npm install
 $truffle compile
 ```
 
-5. Run tests for FoodPrint smart contract.
+5. Run tests for TenderRegistry smart contract.
 ```
 $truffe test
 $truffle test --network development
@@ -81,7 +81,7 @@ If for some reason truffle fails to acknowledge a contract was modified and will
 
 5. Update `truffle-config.js` development network with NetworkID, Host and Port values from your local Blockchain in Ganache.
 
-6. Create a .env file in the root directory of your project. Add environment-specific variables on new lines in the form of NAME=VALUE. For example
+6. Optionally, you can create a .env file in the root directory of your project. Add environment-specific variables on new lines in the form of NAME=VALUE. For example
 
 ```
 APP_ENV=staging
@@ -136,7 +136,6 @@ $truffle migrate --network rinkeby --compile-all --reset
 ## Production Deployment
 1. To deploy to a production server, first bundle and uglify then deploy
 ```
-$npm run build
 $npm run start
 ```
 
