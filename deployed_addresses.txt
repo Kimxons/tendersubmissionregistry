@@ -1,8 +1,9 @@
-Use a library or extend a contract
-Via EthPM or write your own
-Deploy your application onto one of the test networks. Include a document called
-deployed_addresses.txt that describes where your contracts live (which testnet and
-address).
-You can verify your contract source code using etherscan for the appropriate testnet
-https://etherscan.io/verifyContract (https://www.google.com/url?q=https:
-//rinkeby.etherscan.io/verifyContract&sa=D&ust=1562769214887000)
+Contract deployment details
+===========================
+
+Deployment date: 09 Feb 2020
+Testnet: Ropsten
+
+Contract deployed in Testnet transaction: https://ropsten.etherscan.io/tx/0x20f030b6823fc6705cdf2d7d773e18eb6b4c99d4c46266cdb3b0ce6e06094d99
+Contract deployed at Testnet address: https://ropsten.etherscan.io/address/0x650168110ADa1f089D443904c6759b7349576A0d
+Contract creator: https://ropsten.etherscan.io/address/0xa5913085443d492b4e951dab3a80c3598bee6820"

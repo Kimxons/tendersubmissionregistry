@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    const documentRegistryContractAddress = '0x7c5bC1E876f4CC7d36600DEa65e85207FE4DEa90';
+    const documentRegistryContractAddress = ' 0x650168110ADa1f089D443904c6759b7349576A0d';
 
     // The second is the Application Binary interface or the ABI of the contract code.
     // ABI is just a list of method signatures, return types, members etc of the contract in a defined JSON format.
