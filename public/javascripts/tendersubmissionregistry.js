@@ -12,63 +12,98 @@ $(document).ready(function() {
                   VERIFY_TENDER_DOCS_MENU_BUTTON : "#verifyTenderDocsMenuButton",
                   RETRIEVE_TENDER_DOCS_ADDRESS_MENU_BUTTON : "#retrieveTenderDocsAddressMenuButton",
                   GET_TENDER_DOCS_COUNT_MENU_BUTTON : "#getTenderDocsCountMenuButton",
-                  LOADING : "#loadingRow",
-                  NOTIFICATION_BAR_ROW: "#notificationBarRow",
-                  HOW_IT_WORKS: "#howItWorksTenderDocsRow",
-                  UPLOAD_TENDER_DOCS: "#uploadTenderDocsRow",
-                  UPLOAD_TENDER_DOCS_FORM: "#uploadTenderDocsForm",
+                  DESTROY_CONTRACT_MENU_BUTTON : "#destroyContractMenuButton",
+                  TOGGLE_CONTRACT_STATUS_MENU_BUTTON : "#toggleContractStatusMenuButton",
+                  CHECK_CONTRACT_STATUS_MENU_BUTTON : "#checkContractStatusMenuButton",
+
                   VERIFY_TENDER_DOCS: "#verifyTenderDocsRow",
                   VERIFY_TENDER_DOCS_FORM: "#verifyTenderDocsForm",
+                  VERIFY_TENDER_DOCS_INPUT_CHECKBOX_TERMS: "#verifyTenderDocsInputCheckboxTerms",
+                  VERIFY_TENDER_DOCS_INPUT_FILE_ZIP: "#verifyTenderDocsInputFileZIP",
+                  VERIFY_TENDER_DOCS_LABEL_FILE_ZIP: "#verifyTenderDocsLabelFileZIP",
+                  VERIFY_TENDER_DOCS_BUTTON_SUBMIT: "#verifyTenderDocsButtonSubmit",
+
                   RETRIEVE_TENDER_DOCS_ADDRESS: "#retrieveTenderDocsAddressRow",
                   RETRIEVE_TENDER_DOCS_ADDRESS_FORM: "#retrieveTenderDocsAddressForm",
+                  RETRIEVE_TENDER_DOCS_ADDRESS_INPUT_CHECKBOX_TERMS: "#retrieveTenderDocsAddressInputCheckboxTerms",
+                  RETRIEVE_TENDER_DOCS_ADDRESS_INPUT_FILE_ZIP: "#retrieveTenderDocsAddressInputFileZIP",
+                  RETRIEVE_TENDER_DOCS_ADDRESS_LABEL_FILE_ZIP: "#retrieveTenderDocsAddressLabelFileZIP",
+                  RETRIEVE_TENDER_DOCS_ADDRESS_BUTTON_SUBMIT: "#retrieveTenderDocsAddressButtonSubmit",
+
+                  UPLOAD_TENDER_DOCS: "#uploadTenderDocsRow",
+                  UPLOAD_TENDER_DOCS_FORM: "#uploadTenderDocsForm",
                   UPLOAD_TENDER_DOCS_INPUT_CHECKBOX_AUTH: "#uploadTenderDocsInputCheckboxAuthorised",
                   UPLOAD_TENDER_DOCS_INPUT_CHECKBOX_TERMS: "#uploadTenderDocsInputCheckboxTerms",
                   UPLOAD_TENDER_DOCS_INPUT_FILE_ZIP: "#uploadTenderDocsInputFileZIP",
                   UPLOAD_TENDER_DOCS_LABEL_FILE_ZIP: "#uploadTenderDocsLabelFileZIP",
-                  VERIFY_TENDER_DOCS_INPUT_CHECKBOX_TERMS: "#verifyTenderDocsInputCheckboxTerms",
-                  VERIFY_TENDER_DOCS_INPUT_FILE_ZIP: "#verifyTenderDocsInputFileZIP",
-                  VERIFY_TENDER_DOCS_LABEL_FILE_ZIP: "#verifyTenderDocsLabelFileZIP",
-                  RETRIEVE_TENDER_DOCS_ADDRESS_INPUT_CHECKBOX_TERMS: "#retrieveTenderDocsAddressInputCheckboxTerms",
-                  RETRIEVE_TENDER_DOCS_ADDRESS_INPUT_FILE_ZIP: "#retrieveTenderDocsAddressInputFileZIP",
-                  RETRIEVE_TENDER_DOCS_ADDRESS_LABEL_FILE_ZIP: "#retrieveTenderDocsAddressLabelFileZIP",
                   UPLOAD_TENDER_DOCS_TENDER_NUM_SELECTED: "#uploadTenderDocsSelectTenderNum  :selected",
                   UPLOAD_TENDER_DOCS_TENDER_SUBMITTED_BY: "#uploadTenderDocsInputTextSubmittedBy",
                   UPLOAD_TENDER_DOCS_TENDER_SUBMITTED_BY_ID: "#uploadTenderDocsInputTextIDNum",
                   UPLOAD_TENDER_DOCS_TENDER_SUPPLIER_ID: "#uploadTenderDocsInputTextSupplierID",
                   UPLOAD_TENDER_DOCS_BUTTON_SUBMIT: "#uploadTenderDocsButtonSubmit",
-                  VERIFY_TENDER_DOCS_BUTTON_SUBMIT: "#verifyTenderDocsButtonSubmit",
-                  RETRIEVE_TENDER_DOCS_ADDRESS_BUTTON_SUBMIT: "#retrieveTenderDocsAddressButtonSubmit",
-                  NOTIFICATION_BAR_DIV: "#divNotificationBar",
+
                   GET_TENDER_DOCS_COUNT_ROW: "#getTenderDocsCountRow",
                   TENDER_DOCS_COUNT_BUTTON: "#tenderDocsCountButton",
                   TENDER_DOCS_COUNT_DIV: "#getTenderDocsCount",
+
+                  CHECK_CONTRACT_STATUS_ROW: "#checkContractStatusRow",
+                  CHECK_CONTRACT_STATUS_BUTTON: "#checkContractStatusButton",
+                  CHECK_CONTRACT_STATUS_DIV: "#checkContractStatus",
+
+                  TOGGLE_CONTRACT_STATUS_ROW: "#toggleContractStatusRow",
+                  TOGGLE_CONTRACT_STATUS_BUTTON: "#toggleContractStatusButton",
+                  TOGGLE_CONTRACT_STATUS_DIV: "#toggleContractStatus",
+
+                  DESTROY_CONTRACT_ROW: "#destroyContractRow",
+                  DESTROY_CONTRACT_BUTTON: "#destroyContractButton",
+                  DESTROY_CONTRACT_DIV: "#destroyContract",
+
+                  LOADING : "#loadingRow",
+                  NOTIFICATION_BAR_ROW: "#notificationBarRow",
+                  HOW_IT_WORKS: "#howItWorksTenderDocsRow",
+                  NOTIFICATION_BAR_DIV: "#divNotificationBar",
+
                   SUCCESS: "success",
                   ERROR: "error",
                   WARNING: "warning",
+
                   CHOOSE_A_FILE_LABEL: "Choose a file...",
                   EMPTY_STRING: "",
                   KILO: 1000,
                   MEGA: 1000000
                 };
 
-    // display the how it works section i.e. landing page after clicking on TSR title / logo at top of the page
+    // display the how it works section/features row i.e. landing page after clicking on TSR title / logo at top of the page
     $(CONSTANTS.HOME_TENDER_DOCS_MENU_BUTTON).click(function() { displayRow(CONSTANTS.HOW_IT_WORKS, CONSTANTS.EMPTY_STRING) });
 
-    // display the upload tender docs form after menu button click
+    // display the upload tender docs row after menu button click
     $(CONSTANTS.UPLOAD_TENDER_DOCS_MENU_BUTTON).click(function() { displayRow(CONSTANTS.UPLOAD_TENDER_DOCS,
                                                                               CONSTANTS.UPLOAD_TENDER_DOCS_FORM) });
 
-    // display the verify tender docs form  after menu button click
+    // display the verify tender docs row  after menu button click
     $(CONSTANTS.VERIFY_TENDER_DOCS_MENU_BUTTON).click(function() { displayRow(CONSTANTS.VERIFY_TENDER_DOCS,
                                                                               CONSTANTS.VERIFY_TENDER_DOCS_FORM) });
 
-    // display the retrieve tender docs form  after menu button click
+    // display the retrieve tender docs row  after menu button click
     $(CONSTANTS.RETRIEVE_TENDER_DOCS_ADDRESS_MENU_BUTTON).click(function() { displayRow(CONSTANTS.RETRIEVE_TENDER_DOCS_ADDRESS,
                                                                               CONSTANTS.RETRIEVE_TENDER_DOCS_ADDRESS_FORM) });
 
-    // display the tender docs count button after menu button click
+    // display the tender docs count row after menu button click
     $(CONSTANTS.GET_TENDER_DOCS_COUNT_MENU_BUTTON).click(function() { displayRow(CONSTANTS.GET_TENDER_DOCS_COUNT_ROW,
                                                                               CONSTANTS.EMPTY_STRING) });
+
+    // display the check contract status row after menu button click
+    $(CONSTANTS.CHECK_CONTRACT_STATUS_MENU_BUTTON).click(function() { displayRow(CONSTANTS.CHECK_CONTRACT_STATUS_ROW,
+                                                                              CONSTANTS.EMPTY_STRING) });
+
+    // display the toggle contract status row after menu button click
+    $(CONSTANTS.TOGGLE_CONTRACT_STATUS_MENU_BUTTON).click(function() { displayRow(CONSTANTS.TOGGLE_CONTRACT_STATUS_ROW,
+                                                                              CONSTANTS.EMPTY_STRING) });
+
+    // display the destroy contract row after menu button click
+    $(CONSTANTS.DESTROY_CONTRACT_MENU_BUTTON).click(function() { displayRow(CONSTANTS.DESTROY_CONTRACT_ROW,
+                                                                              CONSTANTS.EMPTY_STRING) });
+
     // call uploadTenderZIP function on button click
     $(CONSTANTS.UPLOAD_TENDER_DOCS_BUTTON_SUBMIT).click(uploadTenderZIP);
 
@@ -140,6 +175,9 @@ $(document).ready(function() {
         $(CONSTANTS.RETRIEVE_TENDER_DOCS_ADDRESS).hide();
         $(CONSTANTS.GET_TENDER_DOCS_COUNT_ROW).hide();
         $(CONSTANTS.NOTIFICATION_BAR_ROW).hide();
+        $(CONSTANTS.CHECK_CONTRACT_STATUS_ROW).hide();
+        $(CONSTANTS.TOGGLE_CONTRACT_STATUS_ROW).hide();
+        $(CONSTANTS.DESTROY_CONTRACT_ROW).hide();
 
         //reset form fields
         console.log("formName " + formName);
