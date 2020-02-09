@@ -6,22 +6,36 @@ Online version available at https://tendersubmissionregistry.herokuapp.com/
 
 ![Alt text](./public/images/tsr.png?raw=true "Tender Submission Registry (TSR)")
 
-## Overview
-TSR has 3 main use cases:
+## User Stories
+Company A publishes a tender for services that they require. Company B is a service provider that can render the services that Company A requires.
+Company B gathers the required documentation to submit a formal and legal tender application (i.e. application to render the services required for a fee). 
+The Tender Officer at Company B is responsible for submitting the required tender documents as a single zip file via the web app. 
+Company B Tender Officer logs into the Tender Submission Registry (TSR) web app. They upload the ZIP file to the app, as well as corresponding details such as Name, Surname and the 
+Tender that Company B is bidding for. 
+
+The TSR app processes the Company B submission i.e. hash of the ZIP file (SHA256), Submitter Name & Surname, Submitter ID, Company B Supplier ID and the Tender being applied for. This 
+data is stored on the blockchain. The ZIP file itself can be stored on Company A's fileserver / local network.
+
+An administrator at Company A can then at the time of vetting the tender applications then re-upload the files to verify that they have not been tampered with whilst stored on the Company A network.
+In addition, by verifying the ZIP file submissions, Compnay A can also confirm that the Tender Applications were made on time and not after the expiry date.
+
+TSR helps to prevent fraud by both companies applying for tenders as well as employees working for the compnay that has put out the tender.
+
+As such, TSR has 3 main use cases:
 
 - Confirm timely submission of required tender documents
 
-    - Confirm Tender Documents are submitted before bid close datetime  
+    - Confirm Tender Documents are submitted before bid close datetime.  
 
 
 - Track submission of tender documents
 
-    - Easily track who submitted a Tender Document pack (ZIP file). Details include Name, Surname and ID of individual of submitted the documents on behalf of the supplier company
+    - Easily track who submitted a Tender Document pack (ZIP file). Details include Name, Surname and ID of individual of submitted the documents on behalf of the supplier company.
 
 
 - Confirm authenticity of Tender Document pack (ZIP file)
 
-    - At the time of vetting/reviewing tender applications and corresponding document packs (ZIP files), TSR can be used to confirm that the ZIP files that the tender issuing company has on record have not been tampered with post online submission
+    - At the time of vetting/reviewing tender applications and corresponding document packs (ZIP files), TSR can be used to confirm that the ZIP files that the tender issuing company has on record have not been tampered with post online submission.
 
 ## Documentation
 Additional documentation in the following files:
