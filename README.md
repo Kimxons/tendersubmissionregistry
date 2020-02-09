@@ -2,7 +2,9 @@
 Tender Submission Registry (TSR) is a Blockchain powered (Ethereum DApp) procurement platform for tracing tender document submissions.
 TSR is used to Digitally sign tender documents (in zip format) at submission time and Verify authenticity of submissions during tender vetting process.
 
-Online version available at https://tendersubmissionregistry.herokuapp.com/#
+Online version available at https://tendersubmissionregistry.herokuapp.com/
+
+![Alt text](./public/images/tsr.png?raw=true "Tender Submission Registry (TSR)")
 
 ## Overview
 TSR has 3 main use cases:
