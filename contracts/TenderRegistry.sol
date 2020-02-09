@@ -5,7 +5,43 @@ import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 
 /** @title Tender Submission Registry. */
 contract TenderRegistry is Ownable {
+    /*
+        NB:
+        - "internal" functions can only be called from the contract itself (or from derived contracts).
+
+        - v0.5 breaking changes list that:
+            - Explicit data location for all variables of struct, array or mapping types is now mandatory.
+            - This is also applied to function parameters and return variables.
+
+        Recall that when a function's visibility is external, only external contracts can call that function.
+        When such an external call happens, the data of that call is stored in calldata. Reading from calldata is cheap
+        as compared to reading from memory which uses more data.
+
+        External functions = calldata, public functions = memory
+
+        How to Comment:
+        /**
+          * @dev Throws unless `msg.sender` is the current owner, an authorized operator, or the approved
+          * address for this NFT. Throws if `_from` is not the current owner. Throws if `_to` is the zero
+          * address. Throws if `_tokenId` is not a valid NFT. This function can be changed to payable.
+          * @notice The caller is responsible to confirm that `_to` is capable of receiving NFTs or else
+          * they maybe be permanently lost.
+          * @param _from The current owner of the NFT.
+          * @param _to The new owner.
+          * @param _tokenId The NFT to transfer.
+          *
+        function transferFrom(
+            address _from,
+            address _to,
+            uint256 _tokenId
+        )
+
+        If your struct has more than 7 variables, you may run into stack too deep error when creating or when
+        returning values from
+    */
+
     address payable contractOwner;
+    bool private stopped; // for use in circuit breaker
 
     /*
         This is a struct for a single Tender Submission.
@@ -42,60 +78,44 @@ contract TenderRegistry is Ownable {
     string[] public tenderHashes;
 
     /**
-     * @dev Constructor.
-     */
-    constructor () public {
-          contractOwner = msg.sender;
-//        registerTenderSubmission("{ZIPFIleName: test.zip", ZIPFileSize:"0.433993MB"},
-//                                  f149d75e984f1e919c4b896a0701637ff0260b834e1c18f3a9776c12fbf82311,
-//                                  {SubmitterFullName:"SubmitterFullName",
-//                                   SubmitterIdentificationNumber:"SubmitterIdentificationNumber",
-//                                   SupplierID:SupplierID},
-//                                 "1001 - Fix and Supply Data Center Hardware",
-//                                 "02-02-2020 19:00:00", "02-02-2020 19:00:00", 1);
-    }
-
-    /**
      * @dev Fired on submission of a Tender ZIP File.
      */
     event registeredTenderEvent (
         uint indexed _tenderSubmissionId
     );
+
+    /**
+     * @dev Constructor.
+     */
+    constructor () public {
+        contractOwner = msg.sender;
+        stopped = false;
+    }
+
     /*
-        NB:
-        - "internal" functions can only be called from the contract itself (or from derived contracts).
-
-        - v0.5 breaking changes list that:
-            - Explicit data location for all variables of struct, array or mapping types is now mandatory.
-            - This is also applied to function parameters and return variables.
-
-        Recall that when a function's visibility is external, only external contracts can call that function.
-        When such an external call happens, the data of that call is stored in calldata. Reading from calldata is cheap
-        as compared to reading from memory which uses more data.
-
-        External functions = calldata, public functions = memory
-
-        How to Comment:
-        /**
-          * @dev Throws unless `msg.sender` is the current owner, an authorized operator, or the approved
-          * address for this NFT. Throws if `_from` is not the current owner. Throws if `_to` is the zero
-          * address. Throws if `_tokenId` is not a valid NFT. This function can be changed to payable.
-          * @notice The caller is responsible to confirm that `_to` is capable of receiving NFTs or else
-          * they maybe be permanently lost.
-          * @param _from The current owner of the NFT.
-          * @param _to The new owner.
-          * @param _tokenId The NFT to transfer.
-          *
-        function transferFrom(
-            address _from,
-            address _to,
-            uint256 _tokenId
-        )
-
-        If your struct has more than 7 variables, you may run into stack too deep error when creating or when
-        returning values from
+        @dev Circuit breaker switch
     */
-    
+    function toggleContractActive() onlyOwner public {
+        stopped = !stopped;
+    }
+
+    /*
+        @dev Circuit breaker modifier. Throws if contract is stopped.
+    */
+    modifier stopInEmergency() {
+        require(!stopped, "Circuit Breaker: Contract is currently stopped.");
+        _;
+    }
+
+    /*
+        @dev Circuit breaker modifier. Throws if contract is not stopped.
+    */
+    modifier onlyInEmergency() {
+        require(stopped, "Circuit Breaker: Contract is not currently stopped.");
+        _;
+    }
+
+
     /**
      * @dev Register a Tender submission - it should add the Tender submission to the array of Tender submission.
      * @param ZIPFileDetails Name and size of ZIP File.
@@ -107,7 +127,7 @@ contract TenderRegistry is Ownable {
     function registerTenderSubmission ( string memory ZIPFileDetails, string memory ZIPFileHash,
                                         string memory TenderSummary, string memory SupplierDetails,
                                         string memory SubmissionDate)
-                                        public returns(uint) {
+                                        stopInEmergency public returns(uint) {
         /*
             Recall that Public functions need to write all of the arguments to memory because public functions
             may be called internally, which is an entirely different process from external calls. Thus, when the
@@ -142,7 +162,7 @@ contract TenderRegistry is Ownable {
      * @dev Returns the number of TenderSubmissions tracked on Blockchain.
      * Can only be called by the current owner.
      */
-    function getTenderSubmissionsCount() external onlyOwner view returns(uint) {
+    function getTenderSubmissionsCount() external onlyInEmergency onlyOwner view returns(uint) {
         return tenderHashes.length;
     }
 
@@ -151,7 +171,7 @@ contract TenderRegistry is Ownable {
      * @param hash ZIP File Hash which is key in the tenderhash map.
      * Can only be called by the current owner.
      */
-    function getTenderSubmitterAddress(string calldata hash) external onlyOwner view returns(address) {
+    function getTenderSubmitterAddress(string calldata hash) external onlyOwner stopInEmergency view returns(address) {
        return tendersAddressMap[hash];
     }
 
@@ -159,7 +179,7 @@ contract TenderRegistry is Ownable {
      * @dev Returns a ZIPFileHash from tenderHash array using array index.
      * @param arrayIndex Array index of ZIP File Hash
      */
-    function getZipFileHashByIndex(uint256 arrayIndex) external view returns(string memory) {
+    function getZipFileHashByIndex(uint256 arrayIndex) external stopInEmergency view returns(string memory) {
        return tenderHashes[arrayIndex];
     }
 
@@ -167,7 +187,7 @@ contract TenderRegistry is Ownable {
      * @dev Returns the tender submission details if the hash exists in the map.
      * @param hash ZIP File Hash which is key in the tenderhash map.
      */
-    function getTenderSubmission(string calldata hash) external view returns (string memory, string memory, string memory,
+    function getTenderSubmission(string calldata hash) external stopInEmergency view returns (string memory, string memory, string memory,
                                                                      string memory, string memory, uint256, uint) {
         /*
             Recall that a struct in solidity is simply a loose bag of variables so the return value cannot be a struct
@@ -183,7 +203,7 @@ contract TenderRegistry is Ownable {
      * @dev Confirm whether the hash exists in the submissions.
      * @param hash ZIP File Hash which iskey in the tenderhash map
      */
-    function checkTenderSubmission(string memory hash) public view returns (bool) {
+    function checkTenderSubmission(string memory hash) public stopInEmergency view returns (bool) {
         // check whether the hash is among the list of known hashes
         uint onChainIsSet = tendersMap[hash].IsSet;
         if (onChainIsSet > 0) {
@@ -206,7 +226,7 @@ contract TenderRegistry is Ownable {
      * @dev Remove the storage and code from the state.
      * Can only be called by the current owner.
      */
-    function destroy() public onlyOwner {
+    function destroy() public onlyInEmergency onlyOwner {
         // cast owner which is address to address payable
         //contractOwner = address(uint160(owner));
         selfdestruct(contractOwner);
