@@ -42,7 +42,7 @@ Additional documentation in the following files:
 - [Avoiding Common Attacks](../master/avoiding_common_attacks.md)
 - [Deployed Addresses](../master/deployed_addresses.md)
 - [Design Pattern Decisions](../master/design_pattern_decisions.md)
-- Demo videos - https://drive.google.com/open?id=1LN89EV6Lt_IqYG4ENatQ5AyOCZ88BNHa
+- Demo videos (videos tested using VLC Media Player) - https://drive.google.com/open?id=1LN89EV6Lt_IqYG4ENatQ5AyOCZ88BNHa
     - 1_TSR_Ganache_720p.m4v: Demo of TSR running on localhost and connected to Ganache.
     - 2_TSR_Ganache_720p.m4v: Demo of TSR running on heroku and conntected to Ropsten.
 
@@ -54,7 +54,6 @@ In order to run TSR, an environment with the following is required:
 - Truffle Framework
 - Web3.js
 - Bootstrap
-- MySQL
 - MetaMask (MetaMask is an extension for accessing Ethereum enabled distributed applications, or "Dapps" in your browser! The extension injects the Ethereum web3 API into every website's javascript context, so that dapps can read from the blockchain.)
 
 1. Install Truffle globally. Truffle is the most popular smart contract development, testing, and deployment framework. 
