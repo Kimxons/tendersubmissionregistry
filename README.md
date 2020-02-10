@@ -42,7 +42,9 @@ Additional documentation in the following files:
 - [Avoiding Common Attacks](../master/avoiding_common_attacks.md)
 - [Deployed Addresses](../master/deployed_addresses.md)
 - [Design Pattern Decisions](../master/design_pattern_decisions.md)
-
+- Demo videos - https://drive.google.com/open?id=1LN89EV6Lt_IqYG4ENatQ5AyOCZ88BNHa
+    - 1_TSR_Ganache_720p.m4v: Demo of TSR running on localhost and connected to Ganache.
+    - 2_TSR_Ganache_720p.m4v: Demo of TSR running on heroku and conntected to Ropsten.
 
 
 ## Installation (Development Environment)
