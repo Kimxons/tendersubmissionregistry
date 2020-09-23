@@ -75,6 +75,8 @@ $npm install
 $truffle compile
 ```
 
+If compile fails because `.secret` does not exist, you will need to create a Wallet (e.g. using MetaMask) and store the seed phrase/mnemonic in a `.secret` file in your project root. Make sure the `.secret` is gitignored!
+
 5. Run tests for TenderRegistry smart contract.
 ```
 $truffe test
